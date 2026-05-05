@@ -1,10 +1,13 @@
 # Lambda IAM Role
+# ============================================================================
+# LAMBDA ROLE (shared by all optimization functions)
+# ============================================================================
 resource "aws_iam_role" "lambda_finops_role" {
-  name = "lambda-finops-automation-role"
+  name = "lambda-finops-role"
 
-  assume_role_policy = jsonencode({ 
+  assume_role_policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [{ 
+    Statement = [{
       Action = "sts:AssumeRole"
       Effect = "Allow"
       Principal = {
@@ -14,26 +17,70 @@ resource "aws_iam_role" "lambda_finops_role" {
   })
 }
 
-# RDS Optimizer Lambda IAM Policy
-resource "aws_iam_policy" "rds_lambda_optimizer_policy" {
-  name = "rds-lambda-optimizer-policy"
-  #role = aws_iam_role.lambda_finops_role.id
+# ============================================================================
+# 1. CONSOLIDATED RDS START/STOP POLICY (No duplication!)
+# ============================================================================
+resource "aws_iam_role_policy" "rds_scheduler_policy" {
+  name = "rds-scheduler-policy"
+  role = aws_iam_role.lambda_finops_role.id
 
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-      # 1. Monitoring and Discovery Permissions
       {
+        Sid    = "RDSStartStop"
+        Effect = "Allow"
+        Action = [
+          "rds:StartDBInstance",
+          "rds:StopDBInstance",
+          "rds:DescribeDBInstances"
+        ]
+        Resource = "arn:aws:rds:${var.aws_region}:${data.aws_caller_identity.current.account_id}:db:${var.rds_instance_identifier}"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "lambda_sns_policy" {
+  name = "lambda-sns-publish-policy"
+  role = aws_iam_role.lambda_finops_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "SNSPublishNotifications"
+        Effect = "Allow"
+        Action = [
+          "SNS:Publish"
+        ]
+        Resource = var.sns_topic_arn
+      }
+    ]
+  })
+}
+
+# ============================================================================
+# 2. RDS OPTIMIZER POLICY (with corrections)
+# ============================================================================
+resource "aws_iam_role_policy" "rds_optimizer_policy" {
+  name = "rds-optimizer-policy"
+  role = aws_iam_role.lambda_finops_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "DescribeRDS"
         Effect = "Allow"
         Action = [
           "rds:DescribeDBInstances",
-          "rds:ListTagsForResource",
+          "rds:ListTagsForResource"
         ]
         Resource = "*"
       },
-
-      # 2. Stop and Terminate Actions
       {
+        Sid    = "StopAndTerminate"
         Effect = "Allow"
         Action = [
           "rds:StopDBInstance",
@@ -41,108 +88,146 @@ resource "aws_iam_policy" "rds_lambda_optimizer_policy" {
         ]
         Resource = "arn:aws:rds:${var.aws_region}:${data.aws_caller_identity.current.account_id}:db:${var.rds_instance_identifier}"
       },
-
-      # 3.Safety First
       {
+        Sid    = "SnapshotManagement"
         Effect = "Allow"
         Action = [
           "rds:CreateDBSnapshot",
+          "rds:DeleteDBSnapshot",
+          "rds:DescribeDBSnapshots"
         ]
-        Resource = "arn:aws:rds:${var.aws_region}:${data.aws_caller_identity.current.account_id}:snapshot:*"
+        Resource = [
+          "arn:aws:rds:${var.aws_region}:${data.aws_caller_identity.current.account_id}:db:${var.rds_instance_identifier}",
+          "arn:aws:rds:${var.aws_region}:${data.aws_caller_identity.current.account_id}:snapshot:*"
+        ]
       },
-
-      # 4. CloudWatch Logs Permissions
       {
+        Sid    = "CloudWatchMetrics"
+        Effect = "Allow"
+        Action = [
+          "cloudwatch:GetMetricData",
+          "cloudwatch:GetMetricStatistics"
+        ]
+        Resource = "*"  # CloudWatch doesn't support resource-level permissions
+      },
+      {
+        Sid    = "Logging"
         Effect = "Allow"
         Action = [
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ]
-        Resource = "arn:aws:logs:*:*:*"
+        Resource = "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/*"
       }
-    ] 
+    ]
   })
 }
 
-# S3 Optimizer Lambda IAM Policy
-resource "aws_iam_policy" "s3_lambda_optimizer_policy" {
-  name = "s3-idle-cleaner-and-lcp-policy"
-  # role = aws_iam_role.lambda_finops_role.id
+# ============================================================================
+# 3. S3 OPTIMIZER POLICY (corrected)
+# ============================================================================
+resource "aws_iam_role_policy" "s3_optimizer_policy" {
+  name = "s3-optimizer-policy"
+  role = aws_iam_role.lambda_finops_role.id
 
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-      # 1. Metadata and Tagging Permissions
       {
+        Sid    = "S3BucketMetadata"
         Effect = "Allow"
-        Action   = [
+        Action = [
           "s3:GetBucketTagging",
           "s3:PutBucketTagging",
+          "s3:GetBucketVersioning",
+          "s3:PutBucketVersioning",
           "s3:GetLifecycleConfiguration",
           "s3:PutLifecycleConfiguration"
         ]
         Resource = "arn:aws:s3:::${var.s3_bucket_name}"
       },
-
-      # 2. Activity Check
       {
+        Sid    = "CloudWatchActivity"
         Effect = "Allow"
         Action = [
           "cloudwatch:GetMetricData"
         ]
         Resource = "*"
       },
-
-      # 3. Data Cleaning
       {
+        Sid    = "S3DataCleaning"
         Effect = "Allow"
         Action = [
           "s3:DeleteObject",
           "s3:DeleteObjectVersion",
-          "s3:ListBucket"
+          "s3:ListBucket",
+          "s3:GetObject"
         ]
         Resource = [
           "arn:aws:s3:::${var.s3_bucket_name}",
           "arn:aws:s3:::${var.s3_bucket_name}/*"
         ]
       },
-
-      # 4. Logs 
       {
+        Sid    = "Logging"
         Effect = "Allow"
         Action = [
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ]
-        Resource = "arn:aws:logs:*:*:*"
+        Resource = "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/*"
       }
     ]
   })
 }
 
-# RDS Policy Attachment
-resource "aws_iam_role_policy_attachment" "attact_rds" {
-  role       = aws_iam_role.lambda_finops_role.name
-  policy_arn = aws_iam_policy.rds_lambda_optimizer_policy.arn  
+resource "aws_lambda_function" "rds_start_scheduler" {
+  filename      = data.archive_file.rds_start_zip.output_path
+  function_name = "rds-start-scheduler"
+  role          = aws_iam_role.lambda_finops_role.arn
+  handler       = "rds_scheduler_start.lambda_handler"
+  runtime       = var.runtime_environment
+  timeout       = 60
+
+  source_code_hash = data.archive_file.rds_start_zip.output_base64sha256
+
+  environment {
+    variables = {
+      DB_INSTANCE_ID = var.rds_instance_identifier
+      SNS_TOPIC_ARN  = var.sns_topic_arn
+    }
+  }
 }
 
-# S3 Policy Attachment
-resource "aws_iam_role_policy_attachment" "attach_s3" {
-  role       = aws_iam_role.lambda_finops_role.name
-  policy_arn = aws_iam_policy.s3_lambda_optimizer_policy.id
-} 
+resource "aws_lambda_function" "rds_stop_scheduler" {
+  filename      = data.archive_file.rds_stop_zip.output_path
+  function_name = "rds-stop-scheduler"
+  role          = aws_iam_role.lambda_finops_role.arn
+  handler       = "rds_scheduler_stop.lambda_handler"
+  runtime       = var.runtime_environment
+  timeout       = 60
+
+  source_code_hash = data.archive_file.rds_stop_zip.output_base64sha256
+
+  environment {
+    variables = {
+      DB_INSTANCE_ID = var.rds_instance_identifier
+      SNS_TOPIC_ARN  = var.sns_topic_arn
+    }
+  }
+}
 
 resource "aws_lambda_function" "rds_optimizer" {
-  filename = data.archive_file.lambda_zip.output_path
+  filename = data.archive_file.rds_optimizer_zip.output_path
   function_name = "rds-idle-optimizer" 
   role = aws_iam_role.lambda_finops_role.arn
   handler = "rds_optimizer.lambda_handler"
   runtime = var.runtime_environment
   timeout = 60
 
-  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+  source_code_hash = data.archive_file.rds_optimizer_zip.output_base64sha256
 
   environment {
     variables = {
@@ -153,14 +238,14 @@ resource "aws_lambda_function" "rds_optimizer" {
 }
 
 resource "aws_lambda_function" "s3_optimizer" {
-  filename = data.archive_file.lambda_zip.output_path
+  filename = data.archive_file.s3_optimizer_zip.output_path
   function_name = "s3-activity-optimizer" 
   role = aws_iam_role.lambda_finops_role.arn
   handler = "s3_optimizer.lambda_handler"
   runtime = var.runtime_environment
   timeout = 60
 
-  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+  source_code_hash = data.archive_file.s3_optimizer_zip.output_base64sha256
 
   environment {
     variables = {
@@ -170,16 +255,23 @@ resource "aws_lambda_function" "s3_optimizer" {
   }
 }
 
-# Lambda Permission for EventBridge to invoke Lambda for RDS Optimizer
-resource "aws_lambda_permission" "allow_eventbridge_rds" {
-  statement_id = "AllowExecutionFromEventBridgeRDS"
-  action = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.rds_optimizer.function_name
-  principal = "events.amazonaws.com"
-  source_arn = var.rds_idle_rule_arn
+resource "aws_lambda_permission" "allow_scheduler_start" {
+  statement_id  = "AllowSchedulerInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.rds_start_scheduler.function_name
+  principal     = "scheduler.amazonaws.com"
+  source_arn = var.rds_start_rule_arn
 }
 
-# Lambda Permission for EventBridge Scheduler to invoke Lambda for S3 Optimizer
+resource "aws_lambda_permission" "allow_scheduler_stop" {
+  statement_id  = "AllowSchedulerInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.rds_stop_scheduler.function_name
+  principal     = "scheduler.amazonaws.com"
+  source_arn = var.rds_stop_rule_arn
+}
+
+#Lambda Permission for EventBridge Scheduler to invoke Lambda for S3 Optimizer
 resource "aws_lambda_permission" "allow_eventbridge_scheduler_rds" {
   statement_id = "AllowExecutionFromEventBridgeSchedulerRDS"
   action = "lambda:InvokeFunction"

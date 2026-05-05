@@ -9,7 +9,7 @@ sns = boto3.client('sns')
 
 def lambda_handler(event, context) :
     # Environment Variables
-    bucket_name = os.environ['S3_BUCKET']
+    bucket_name = os.environ.get('S3_BUCKET_NAME')
     sns_topic_arn = os.environ['SNS_TOPIC_ARN']
     
     # 1. Check previous last 3 days total requests (AllRequests)
@@ -32,7 +32,7 @@ def lambda_handler(event, context) :
                                 }
                             ]
                         },
-                        'Period': 86400,  # Daily
+                        'Period': 864000*3,  # 3 Days
                         'Stat': 'Sum'
                     },
                 },
@@ -53,7 +53,7 @@ def lambda_handler(event, context) :
                                 }
                             ]
                         },
-                        'Period': 86400,  # Daily
+                        'Period': 86400*3,  # 3 Days
                         'Stat': 'Sum'
                     },
                 },
@@ -74,12 +74,12 @@ def lambda_handler(event, context) :
                                 }
                             ]
                         },
-                        'Period': 86400,  # Daily
+                        'Period': 86400*3,  # 3 Days
                         'Stat': 'Sum'
                     },
                 }
             ],
-            StartTime=datetime.now(timezone.utc) - timedelta(days=3),
+            StartTime=datetime.now(timezone.utc) - timedelta(hours=1),
             EndTime=datetime.now(timezone.utc),
     )
     
@@ -113,7 +113,7 @@ def lambda_handler(event, context) :
     
     # --- HYBRID LOGIC START ---
     
-    # Scenario 1: Zero activity for 3 days -> Delete all objects (Cleanup)
+    #Scenario 1: Zero activity for 3 days -> Delete all objects (Cleanup)
     if total_requests == 0 :
         print(f"No activity detected for 3 days. Cleaning up all objects in {bucket_name}...")
         
@@ -184,15 +184,15 @@ def send_sns_notification(topic_arn,bucket_name, object_count):
     try:
         subject = f"S3 Bucket Cleanup Alert - {bucket_name}"
         message = f"""
-S3 Bucket Cleanup Notification
-
-Bucket Name: {bucket_name}
-Total Objects to be Deleted: {object_count}
-Action: Automatic cleanup initiated due to no activity for 3 days
-Timestamp: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')}
-
-This notification is sent before cleanup process begins.
-Please verify if this action is intended.
+            S3 Bucket Cleanup Notification
+            
+            Bucket Name: {bucket_name}
+            Total Objects to be Deleted: {object_count}
+            Action: Automatic cleanup initiated due to no activity for 3 days
+            Timestamp: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')}
+            
+            This notification is sent before cleanup process begins.
+            Please verify if this action is intended.
         """
         
         response = sns.publish(

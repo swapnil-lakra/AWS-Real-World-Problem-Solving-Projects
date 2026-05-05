@@ -100,7 +100,7 @@ resource "aws_cloudwatch_dashboard" "finops_dashboard" {
           markdown = <<-EOT
             ## FinOps Timer
             **Scheduled Scaling: 9 AM - 9 PM IST**
-            **Raat ko instances stop karne se cost 50% kam hoti hai.**
+            **At night stopping instances cost 50% less**
           EOT
         }
         x = 8
@@ -151,7 +151,7 @@ resource "aws_cloudwatch_dashboard" "finops_dashboard" {
           ]
           view = "gauge"
           yAxis = { left = { min = 0, max = 100 } }
-          period = 3600
+          period = 300
           annotations = {}
         }
         x = 0
@@ -281,10 +281,10 @@ resource "aws_cloudwatch_dashboard" "finops_dashboard" {
           region = var.aws_region
 
           metrics = [
-           ["AWS/S3","BucketSizeBytes","BucketName",var.s3_bucket_name,"StorageClass","Standard", { stat = "Average", period = 86400, label = "Standard Storage (Bytes)" }]
+           ["AWS/S3","BucketSizeBytes","BucketName",var.s3_bucket_name,"StorageClass","Standard", { stat = "Average", period = 300, label = "Standard Storage (Bytes)" }]
           ]
           view = "timeSeries"
-          period = 86400
+          period = 300
           stacked = false
 
           yAxis = {
@@ -310,9 +310,9 @@ resource "aws_cloudwatch_dashboard" "finops_dashboard" {
           region = var.aws_region
       
           metrics = [
-            ["AWS/S3", "GetRequests",  "BucketName", var.s3_bucket_name, { id = "m1", stat = "Sum", period = 86400, visible = false }],
-            ["AWS/S3", "PutRequests",  "BucketName", var.s3_bucket_name, { id = "m2", stat = "Sum", period = 86400, visible = false }],
-            ["AWS/S3", "ListRequests", "BucketName", var.s3_bucket_name, { id = "m3", stat = "Sum", period = 86400, visible = false }],
+            ["AWS/S3", "GetRequests",  "BucketName", var.s3_bucket_name, { id = "m1", stat = "Sum", period = 300, visible = false }],
+            ["AWS/S3", "PutRequests",  "BucketName", var.s3_bucket_name, { id = "m2", stat = "Sum", period = 300, visible = false }],
+            ["AWS/S3", "ListRequests", "BucketName", var.s3_bucket_name, { id = "m3", stat = "Sum", period = 300, visible = false }],
       
             // Math Expression: Sum of the three core requests
             [{ 
@@ -320,12 +320,12 @@ resource "aws_cloudwatch_dashboard" "finops_dashboard" {
               label      = "Active Requests (Get+Put+List)", 
               id         = "e1",
               stat       = "Sum",
-              period     = 86400
+              period     = 300
             }]
           ]
       
           view = "timeSeries"
-          period = 86400
+          period = 300
       
           sparkline = true
           annotations = {
@@ -354,7 +354,7 @@ resource "aws_cloudwatch_dashboard" "finops_dashboard" {
             ["AWS/S3","NumberOfObjects","BucketName",var.s3_bucket_name,"StorageClass","AllStorageTypes", { stat = "Average", label = "Total Objects", color = "#2ca02c" }]
           ]
           view = "timeSeries"
-          period = 86400
+          period = 300
 
           sparkline = true
 
@@ -381,12 +381,12 @@ resource "aws_cloudwatch_dashboard" "finops_dashboard" {
           region = var.aws_region
 
           metrics = [
-            ["AWS/S3", "GetRequests", "BucketName", var.s3_bucket_name, "FilterId", "EntireBucket", { "stat": "Sum", "period": 86400, "label": "GET (Reads)", "color": "#1f77b4" }],
-            ["AWS/S3", "PutRequests", "BucketName", var.s3_bucket_name, "FilterId", "EntireBucket", { "stat": "Sum", "period": 86400, "label": "PUT (Writes)", "color": "#ff7f0e" }]
+            ["AWS/S3", "GetRequests", "BucketName", var.s3_bucket_name, "FilterId", "EntireBucket", { "stat": "Sum", "period": 300, "label": "GET (Reads)", "color": "#1f77b4" }],
+            ["AWS/S3", "PutRequests", "BucketName", var.s3_bucket_name, "FilterId", "EntireBucket", { "stat": "Sum", "period": 300, "label": "PUT (Writes)", "color": "#ff7f0e" }]
           ]
 
           view = "bar"
-          period = 86400
+          period = 300
 
           yAxis = {
             left = {

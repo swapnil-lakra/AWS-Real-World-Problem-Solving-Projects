@@ -25,9 +25,14 @@ variable "runtime_environment" {
   description = "Name and version of runtime environment"
 }
 
-variable "rds_idle_rule_arn" {
+variable "rds_start_rule_arn" {
   type = string
-  description = "ARN of idle rds rule"
+  description = "ARN of start rds rule"
+}
+
+variable "rds_stop_rule_arn" {
+  type = string
+  description = "ARN of stop rds rule"
 }
 
 variable "rds_idle_scheduler_rule_arn" {
