@@ -1,5 +1,7 @@
-## AutoFinOps: Real-Time Cloud Cost Optimization Platform for SaaS (AWS)
+## Project Title
+### AutoFinOps: Real-Time Cloud Cost Optimization Platform for SaaS (AWS)
 
+## Business Problem
 ### A mid-sized SaaS company on Amazon Web Services spends **₹35–₹50 lakhs monthly**, with **25–40% wasted** due to idle compute, over-provisioned databases, and unused storage. Despite **predictable workloads**, the **lack of real-time cost visibility** and **automated optimization** leads to consistent **over-provisioning** and **billing spikes**. A **small DevOps team**, without a **dedicated FinOps practice**, cannot efficiently manage optimization across **50+ services** without risking reliability**. If unresolved, this could result in **₹1–₹1.5 crore in annual losses**, directly impacting **profitability** and limiting **future growth**.
 
 > Cut cloud waste by **30–40%**, reducing monthly spend from **₹50L to ~₹30L**, saving **₹1–₹1.5 crore annually** while improving cost visibility and operational efficiency.
