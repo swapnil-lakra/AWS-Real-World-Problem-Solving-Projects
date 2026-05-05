@@ -32,7 +32,7 @@ def lambda_handler(event, context) :
                                 }
                             ]
                         },
-                        'Period': 864000*3,  # 3 Days
+                        'Period': 86400*3,  # 3 Days
                         'Stat': 'Sum'
                     },
                 },

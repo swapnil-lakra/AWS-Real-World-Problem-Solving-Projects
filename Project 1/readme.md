@@ -1,25 +1,16 @@
-# Cloud Cost Optimization for mid-sized SaaS Enterprise (FinOps Automation)
+## AutoFinOps: Real-Time Cloud Cost Optimization Platform for SaaS (AWS)
 
+### A mid-sized SaaS company on Amazon Web Services spends **₹35–₹50 lakhs monthly**, with **25–40% wasted** due to idle compute, over-provisioned databases, and unused storage. Despite **predictable workloads**, the **lack of real-time cost visibility** and **automated optimization** leads to consistent **over-provisioning** and **billing spikes**. A **small DevOps team**, without a **dedicated FinOps practice**, cannot efficiently manage optimization across **50+ services** without risking reliability**. If unresolved, this could result in **₹1–₹1.5 crore in annual losses**, directly impacting **profitability** and limiting **future growth**.
 
-## A mid-sized SaaS enterprise on AWS is spending ₹35–₹50 lakhs per month on cloud infrastructure, with 25–40% of costs wasted due to idle EC2 instances, over-provisioned databases, and unused storage. Despite mostly predictable workloads with occasional 3–5x traffic spikes, they lack real-time cost visibility and automated optimization, leading to consistent over-provisioning and billing shocks. Their small engineering team cannot efficiently manage cost optimization across 50+ AWS services manually. If unresolved, this could result in ₹1–₹1.5 crore in annual losses, directly impacting profitability and limiting future growth investments.
+> Cut cloud waste by **30–40%**, reducing monthly spend from **₹50L to ~₹30L**, saving **₹1–₹1.5 crore annually** while improving cost visibility and operational efficiency.
 
-## To solve above problem what they are actually facing we have to simulate same problem in out own cloud infrastructure
-
-## To do this i will create :-
-1. ec2 instance that will simulate idle ec2
-2. rds with mysql that will simulate overprovisioned database
-3. s3 bucket that will simulate unused storage 
-
-## Then i have to create private network so i have to create :-
-1. vpc for private network
-2. private subnets for rds 
-3. public subnet for ec2
-4. Internet Gateway to access internet 
-5. Security Groups for ec2 and rds
-
-## To attach s3 with ec2 i will need to create :-
-1. IAM Role to access s3 in a secure way
-
+## Key Architecture Decisions & Trade-offs
+| Decision | Chosen Option | Why This Over Alternative | Trade-off / Risk Mitigated |
+|----------|---------------|---------------------------|----------------------------|
+| Compute for image processing | Lambda | Pay-per-use, auto-scales to zero | Cold starts → mitigated with provisioned concurrency |
+| Storage | S3 private bucket | Cheapest, durable, encryption at rest | Public bucket risk → solved with signed URLs + IAM |
+| Networking | Custom VPC + private subnets | Security + control | Extra cost → justified by least-privilege |
+| Scaling | Auto Scaling + CloudFront | Handles 10x spikes | Cost during quiet periods → near zero|
 
 
 
