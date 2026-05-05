@@ -26,7 +26,7 @@ module "auto_scaling_group" {
 
 module "my_rds" {
   source             = "../../modules/rds"
-  private_subnet_ids = [module.my_vpc.public_subnet_1_id, module.my_vpc.public_subnet_2_id]
+  private_subnet_ids = [module.my_vpc.private_subnet_1_id, module.my_vpc.private_subnet_2_id]
   rds_sg_id          = module.my_sg.rds_sg_id
 }
 

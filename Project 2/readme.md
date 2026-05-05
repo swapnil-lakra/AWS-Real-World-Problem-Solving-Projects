@@ -1,3 +1,0 @@
-# Outage-Resilient Multi-Region Architectures for rapidly growing Fintech Company
-
-## A rapidly growing fintech company serving 1–2 million daily users relies on a single AWS region, where even a 10–15 minute outage leads to ₹20–₹30 lakhs in transaction losses and severe customer trust issues. Their current architecture lacks multi-region failover, causing full service downtime during regional disruptions and increasing recovery time to 30–60 minutes. With strict compliance and low-latency requirements (<200 ms), they must ensure high availability without significantly increasing infrastructure costs beyond their ₹40–₹60 lakhs/month budget. If not addressed, repeated outages could result in ₹2–₹3 crore annual revenue loss, regulatory risks, and permanent user churn.

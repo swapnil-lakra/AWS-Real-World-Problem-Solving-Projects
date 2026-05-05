@@ -93,8 +93,7 @@ resource "aws_security_group_rule" "rds_ingress_from_asg" {
   from_port = 3306
   to_port = 3306
   protocol = "tcp"
-  cidr_blocks = [ "0.0.0.0/0" ]
-  #source_security_group_id = aws_security_group.asg_sg.id
+  source_security_group_id = aws_security_group.asg_sg.id
   security_group_id = aws_security_group.rds_sg.id
 }
 

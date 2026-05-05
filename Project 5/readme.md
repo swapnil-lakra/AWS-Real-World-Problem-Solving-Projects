@@ -1,3 +1,0 @@
-# Automated Detection & Remediation of Cloud Misconfigurations for rapidly scaling SaaS Enterprise
-
-## A rapidly scaling SaaS enterprise running 100+ AWS services and managing 500+ resources faces frequent cloud misconfigurations, with 20–30% of incidents caused by incorrect IAM roles, open security groups, and misconfigured storage. These issues lead to 1–2 critical security risks per month and operational disruptions costing ₹10–₹25 lakhs per incident. With a small DevOps team, manual audits and fixes are slow, taking 24–48 hours to detect and remediate issues across environments. If unresolved, the company risks ₹2–₹4 crore in annual losses, potential data breaches, compliance violations, and severe reputational damage.
