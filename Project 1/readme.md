@@ -4,6 +4,11 @@
 
 > Cut cloud waste by **30–40%**, reducing monthly spend from **₹50L to ~₹30L**, saving **₹1–₹1.5 crore annually** while improving cost visibility and operational efficiency.
 
+## Solution Overview & Architecture
+- High-level diagram first (add a screenshot or PlantUML/ASCII diagram here)
+- 2–3 paragraph description of the end-to-end flow
+- Show how the 4–5 core services connect in a **real system** (exactly what Sleman said)
+
 ## Key Architecture Decisions & Trade-offs
 | Decision | Chosen Option | Why This Over Alternative | Trade-off / Risk Mitigated |
 |----------|---------------|---------------------------|----------------------------|
