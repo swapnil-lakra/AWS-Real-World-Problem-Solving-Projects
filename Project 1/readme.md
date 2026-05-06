@@ -16,16 +16,17 @@
 ## Architecture Diagram
 
 ## Key Architecture Decisions & Trade-offs
-(This section gets you hired instantly – interviewers love this)
-
-Use a clean table:
 
 | Decision | Chosen Option | Why This Over Alternative | Trade-off / Risk Mitigated |
 |----------|---------------|---------------------------|----------------------------|
-| Compute for image processing | Lambda | Pay-per-use, auto-scales to zero | Cold starts → mitigated with provisioned concurrency |
-| Storage | S3 private bucket | Cheapest, durable, encryption at rest | Public bucket risk → solved with signed URLs + IAM |
-| Networking | Custom VPC + private subnets | Security + control | Extra cost → justified by least-privilege |
-| Scaling | Auto Scaling + CloudFront | Handles 10x spikes | Cost during quiet periods → near zero|
+| | Lambda | | |
+| | Event-Bridge Scheduler | | |
+| | CloudWatch | | |
+| | Auto-Scaling | | |
+| | S3 Bucket | | | 
+| | RDS | | |
+| | VPC | | |
+| | SNS | | | 
 
 Write 1–2 sentences explaining **your thinking** for each row. This proves depth.
 
@@ -44,7 +45,7 @@ Never list 20 services. Show focus.
   - How you would recreate the exact environment in another region/AZ
 
 ## Folder Structure
-```
+```bash
 .
 └── aws-finops-simulation/
     ├── environments/
