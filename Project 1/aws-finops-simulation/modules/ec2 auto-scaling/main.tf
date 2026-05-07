@@ -19,10 +19,6 @@ resource "aws_launch_template" "lt" {
     create_before_destroy = true
   }
 
-  instance_market_options {
-    market_type = "spot"
-  }
-
   metadata_options {
     http_tokens = "required"
     http_put_response_hop_limit = 1
@@ -75,7 +71,7 @@ resource "aws_autoscaling_group" "asg" {
   name = "web-asg"
   desired_capacity = 1
   min_size = 1
-  max_size = 3
+  max_size = 2
   vpc_zone_identifier = var.private_subnet_ids
 
   launch_template {
@@ -131,7 +127,7 @@ resource "aws_autoscaling_schedule" "start_morning" {
   autoscaling_group_name = aws_autoscaling_group.asg.name
   
   min_size = 1
-  max_size = 3
+  max_size = 2
   desired_capacity = 1
 
   recurrence = "15 3 * * *" # 8:45 AM IST (3:15 UTC)

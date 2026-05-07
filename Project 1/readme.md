@@ -1,38 +1,58 @@
-## Project Title
-### AutoFinOps: Real-Time Cloud Cost Optimization Platform for SaaS (AWS)
+# AutoFinOps: Real-Time Cloud Cost Optimization Platform for SaaS (AWS)
 
-> Cut cloud waste by **30–40%**, reducing monthly spend from **₹50L to ~₹30L**, saving **₹1–₹1.5 crore annually** while improving cost visibility and operational efficiency.
+> Cut cloud waste by **30–40%**, reducing monthly spend from **₹50L to ~₹30L**, saving **₹1–₹1.5 crore annually** while improving **cost visibility** and **operational efficiency**.
 
-## Business Problem
-### A mid-sized SaaS company on Amazon Web Services spends **₹35–₹50 lakhs monthly**, with **25–40% wasted** due to idle compute, over-provisioned databases, and unused storage. Despite **predictable workloads**, the **lack of real-time cost visibility** and **automated optimization** leads to consistent **over-provisioning** and **billing spikes**. A **small DevOps team**, without a **dedicated FinOps practice**, cannot efficiently manage optimization across **50+ services** without risking reliability. If unresolved, this could result in **₹1–₹1.5 crore in annual losses**, directly impacting **profitability** and limiting **future growth**.
+# Business Problem
+A mid-sized SaaS company on Amazon Web Services spends **₹35–₹50 lakhs monthly**, with **25–40% wasted** due to idle compute, over-provisioned databases, and unused storage. Despite **predictable workloads**, the **lack of real-time cost visibility** and **automated optimization** leads to consistent **over-provisioning** and **billing spikes**. A **small DevOps team**, without a **dedicated FinOps practice**, cannot efficiently manage optimization across **50+ services** without risking reliability. If unresolved, this could result in **₹1–₹1.5 crore in annual losses**, directly impacting **profitability** and limiting **future growth**.
 
-## Solution Overview & Architecture
-- High-level diagram first (add a screenshot or PlantUML/ASCII diagram here)
-- 2–3 paragraph description of the end-to-end flow
-- Show how the 4–5 core services connect in a **real system** (exactly what Sleman said)
+# Solution Overview & Architecture
+This project solves business problem that mentioned above by implementing an Automated AWS FinOps platform using Terraform and Serverless AWS Services.
 
-**Example diagram suggestion** (add this as image in repo):
+### The system continuously monitors :
+- EC2 CPU utilization and network in
+- RDS Connections and instance CPU utilization
+- S3 Bucket usage and storage
 
-## Architecture Diagram
+### If resource usage remains below defined thresholds for a configurable duration :
+- automated actions are triggered
+- unused resources are stopped 
+- notifications are sent to administrators
 
-## Key Architecture Decisions & Trade-offs
+### The infrastructure was designed using:
+- Lambda Automation
+- EventBridge Schedules
+- CloudWatch Alarms
+- IAM least-privilege policies
+- Terraform modular infrastructure 
+
+This architecture minimizes manual monitoring while maintining secure and scalable operations.
+
+# Architecture Diagram
+![FinOps Architecture Diagram](https://raw.githubusercontent.com/Swapni-1/AWS-Real-World-Problem-Solving-Projects/refs/heads/main/Project%201/assets/FinOps%20Architecture%20Diagram.jpg)
+
+# Key Architecture Decisions & Trade-offs
 
 | Decision | Chosen Option | Why This Over Alternative | Trade-off / Risk Mitigated |
 |----------|---------------|---------------------------|----------------------------|
-| | Lambda | | |
-| | Event-Bridge Scheduler | | |
-| | CloudWatch | | |
-| | Auto-Scaling | | |
-| | S3 Bucket | | | 
-| | RDS | | |
+| Compute Automation | AWS Lambda | | |
+| Scheduling | Event-Bridge Scheduler | | |
+| Scheduling Auto-Scaling Groups | Auto-Scaling  Schedule | | |
+| Monitoring | CloudWatch Custom Dashboard | | |
+| Handling Unpredictable Traffic Spike | Auto-Scaling Groups | | |
+| Storage Optimization | S3 Bucket | | | 
+| Database Optimization | RDS | | |
 | | VPC | | |
+| | IAM | | |
 | | SNS | | | 
 
 Write 1–2 sentences explaining **your thinking** for each row. This proves depth.
 
 ## Core AWS Services Used (Only 4–6 max)
-- **AWS Service 1** – Short 1-line purpose + why it was perfect
-- **AWS Service 2** – ...
+- **Lambda** - Short 1-line purpose + why it was perfect
+- **Event-Scheduler** -
+- **CloudWatch** -
+- **Auto-Scaling** -
+- **SNS** -
 
 Never list 20 services. Show focus.
 
