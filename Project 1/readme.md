@@ -41,9 +41,9 @@ This architecture minimizes manual monitoring while maintining secure and scalab
 | Handling Unpredictable Traffic Spike | Auto-Scaling Groups | | |
 | Storage Optimization | S3 Bucket | | | 
 | Database Optimization | RDS | | |
-| | VPC | | |
-| | IAM | | |
-| | SNS | | | 
+| Networking | VPC | | |
+| Security | IAM | | |
+| Alert Messaging | SNS | | | 
 
 Write 1–2 sentences explaining **your thinking** for each row. This proves depth.
 
@@ -162,18 +162,39 @@ terraform apply -auto-approve
 
 ## Lessons Learned & What I Would Change
 
-## Working Under Pressure & Problem Solving Approach
+# Engineering Mindset & Problem Solving Approach
 
-## Future Enhancements
+# Future Enhancements
 
-## Screenshots / Live Demo
+# Screenshots / Live Demo
 
-## Clean-Up / Destroy Infrastructure
+# Clean-Up / Destroy Infrastructure
+```bash
+terraform destroy -auto-approve
+```
+important :
+- Empty S3 bucket before destroy
+- Verify billing dashboard after cleanup
 
-## Security Considerations
+# Security Considerations
+Security measures implemented:
+- least-privilage IAM access
+- encrypted storage
+- private subnets
+- security groups (restricted inbound rules)
+- no public database access
+- restriction on public S3 bucket access
 
-## AI Usage Note
+# AI Usage Note
+AI tools such as ChatGPT and Claude were used only for initial idea exploration and Terraform draft assistance.
 
-## Author
+All infrastructure decisions, debugging, architecture design, testing and implementation were manually reviewed and validated before deployment.
+
+# Author
+
+Swapnil Lakra
+
+Cloud Engineer  
+Focused on AWS, Terraform, FinOps, and scalable infrastructure automation.
 
 
