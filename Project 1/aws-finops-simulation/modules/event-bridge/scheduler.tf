@@ -12,6 +12,24 @@ resource "aws_iam_role" "scheduler_role" {
       }
     }]
   })
+
+  tags = {
+    Name        = "scheduler-role"
+
+    Role        = "scheduler-execution-role"
+    Workload    = "iam"
+    Tier        = "automation"
+
+    Purpose     = "lambda-invocation"
+
+    Access      = "internal"
+
+    Automation  = "enabled"
+
+    Permissions = "lambda-invoke"
+
+    Criticality = "high"
+  }
   
 }
 
@@ -29,8 +47,6 @@ resource "aws_iam_role_policy" "scheduler_policy" {
           "lambda:InvokeFunction"
         ]
         Resource = [
-          "${var.aws_lambda_function_rds_optimizer_arn}",
-          "${var.aws_lambda_function_s3_optimizer_arn}",
           "${var.rds_stop_lambda_arn}",
           "${var.rds_start_lambda_arn}"  
         ]
@@ -75,44 +91,4 @@ resource "aws_scheduler_schedule" "rds_stop_daily" {
       DbInstanceIdentifier = var.rds_instance_identifier
     })
   }
-}   
-
-#create a scheduler to stop RDS instance when CPU is less than 5% for 20 mins
-resource "aws_scheduler_schedule" "rds_stop_low_cpu" {
-  name = "stop-rds-low-cpu"
-  group_name = "default"
-  description = "Stop RDS instance when CPU is less than 5% for 20 mins"
-  schedule_expression = "rate(25 minutes)"
-  flexible_time_window {
-    mode = "OFF"
-  }
-  target {
-    arn = var.aws_lambda_function_rds_optimizer_arn
-    role_arn = aws_iam_role.scheduler_role.arn
-    input = jsonencode({
-      DbInstanceIdentifier = var.rds_instance_identifier
-    })
-  }
-}
-
-#create a scheduler to invoke lambda function when S3 Bucket is Unsued for 3 days
-resource "aws_scheduler_schedule" "s3_cleanup" {
-  name                = "s3-cleanup"
-  group_name          = "default"
-  description         = "Clean up S3 Bucket when it is unused for 3 days"
-  schedule_expression = "rate(1 day)" 
-  
-  flexible_time_window {
-    mode = "OFF"
-  }
-
-  target {
-    arn      = var.aws_lambda_function_s3_optimizer_arn  
-    role_arn = aws_iam_role.scheduler_role.arn          
-    
-    # ✅ FIXED: S3-specific input, NOT RDS
-    input = jsonencode({
-      BucketName = var.s3_bucket_name
-    })
-  }
-}
+} 

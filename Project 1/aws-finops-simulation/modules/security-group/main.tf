@@ -11,6 +11,21 @@ resource "aws_security_group" "alb_sg" {
     protocol = -1
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = {
+    Name        = "sg-alb"
+
+    Role        = "load-balancer"
+    Workload    = "alb"
+    Tier        = "public"
+
+    Access      = "internet-facing"
+    TrafficType = "http"
+
+    Purpose     = "public-ingress"
+
+    Criticality = "high"
+  }
 }
 
 resource "aws_security_group_rule" "alb_ingress" {
@@ -38,15 +53,21 @@ resource "aws_security_group" "asg_sg" {
   }
 
   tags = {
-    Name = "sg-web-server-ec2"
-    Role = "web-tier"
-    Workload = "ec2"
-    Access = "public"
-    TrafficType = "http"
-    Purpose = "web-server-access"
-    AutoStop = "true"
-    Schedule = "9-21"
-    Criticality = "medium"
+    Name        = "sg-asg"
+
+    Role        = "application-tier"
+    Workload    = "asg"
+    Tier        = "private"
+
+    Access      = "internal"
+    TrafficType = "web-traffic"
+
+    Purpose     = "application-access"
+
+    TrafficPattern = "predictable-with-spikes"
+
+    Optimization = "required"
+    Criticality  = "high"
   }
 
 }
@@ -76,15 +97,23 @@ resource "aws_security_group" "rds_sg" {
   }
 
   tags = {
-    Name = "sg-rds"
-    Role = "database-tier"
-    Workload = "rds"
-    Access = "private"
+    Name        = "sg-rds"
+
+    Role        = "database-tier"
+    Workload    = "rds"
+    Tier        = "private"
+
+    Access      = "internal"
     TrafficType = "mysql"
-    Purpose = "database-access"
-    Utilization = "low"
-    Rightsize = "pending"
-    Criticality = "high"
+
+    Purpose     = "database-access"
+
+    Scenario     = "overprovisioned-database"
+    Utilization  = "low"
+    Rightsize    = "pending"
+
+    Optimization = "required"
+    Criticality  = "high"
   }
 }
 

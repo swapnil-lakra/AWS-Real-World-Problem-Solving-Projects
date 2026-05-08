@@ -3,12 +3,12 @@
 resource "aws_vpc" "my_vpc" {
   cidr_block = var.vpc_cidr
   enable_dns_hostnames = true 
-  enable_dns_support = true 
+  enable_dns_support = true
 
-  tags = {
-    Name = "finops-vpc"
-    Purpose = "networking"
-    Layer = "network"
+   tags = {
+    Name        = "finops-vpc"
+    Role        = "network"
+    Purpose     = "saas-infrastructure"
   }
 }
 # ===============================
@@ -21,11 +21,11 @@ resource "aws_subnet" "public_subnet_1" {
   availability_zone = "ap-south-2a"
 
   tags = {
-    Name = "public-subnet"
-    Tier = "public"
-    Role = "web-tier"
-    Workload = "alb"
-    Access = "internet-facing"
+    Name       = "public-subnet-1"
+    Tier       = "public"
+    Role       = "load-balancer-tier"
+    Workload   = "alb"
+    Access     = "internet-facing"
   }
 }
 
@@ -36,16 +36,16 @@ resource "aws_subnet" "public_subnet_2" {
   availability_zone = "ap-south-2b"
 
   tags = {
-    Name = "public-subnet"
-    Tier = "public"
-    Role = "web-tier"
-    Workload = "alb"
-    Access = "internet-facing"
+    Name        = "public-subnet-2"
+    Tier        = "public"
+    Role        = "load-balancer-tier"
+    Workload    = "alb"
+    Access      = "internet-facing"
   }
 }
 # =========================================
 
-# ============|Pubic Subnets|==============
+# ============|Private Subnets|==============
 # =========================================
 resource "aws_subnet" "private_subnet_1" {
   vpc_id = aws_vpc.my_vpc.id
@@ -53,11 +53,11 @@ resource "aws_subnet" "private_subnet_1" {
   availability_zone = "ap-south-2a"
 
   tags = {
-    Name = "private-subnet"
-    Tier = "private"
-    Role = "database-tier"
-    Workload = "ec2 and rds"
-    Access = "internal"  
+    Name        = "private-subnet-1"
+    Tier        = "private"
+    Role        = "application-database-tier"
+    Workload    = "asg-rds"
+    Access      = "internal"
   }
 }
 
@@ -67,11 +67,11 @@ resource "aws_subnet" "private_subnet_2" {
   availability_zone = "ap-south-2b"
 
   tags = {
-    Name = "private-subnet"
-    Tier = "private"
-    Role = "database-tier"
-    Workload = "rds"
-    Access = "internal"  
+    Name        = "private-subnet-2"
+    Tier        = "private"
+    Role        = "application-database-tier"
+    Workload    = "asg-rds"
+    Access      = "internal"
   }
 }
 # =========================================
@@ -82,9 +82,10 @@ resource "aws_internet_gateway" "igw" {
    vpc_id = aws_vpc.my_vpc.id
 
    tags = {
-     Name = "igw-finops"
-     Purpose = "internet-access"
-   }
+    Name        = "finops-igw"
+    Role        = "network-egress"
+    Purpose     = "internet-access"
+  }
 }
 # =============================================
 
@@ -99,8 +100,10 @@ resource "aws_route_table" "public_rt" {
   }
 
   tags = {
-    Name = "public-rt"
-    Purpose = "routing"
+    Name        = "public-route-table"
+    Tier        = "public"
+    Role        = "alb-routing"
+    Purpose     = "internet-routing"
   }
 }
 # ===============================================
@@ -124,7 +127,10 @@ resource "aws_route_table" "private_rt" {
   vpc_id = aws_vpc.my_vpc.id
 
   tags = {
-    Name = "private-rt"
+    Name        = "private-route-table"
+    Tier        = "private"
+    Role        = "backend-routing"
+    Purpose     = "internal-routing"
   }
 }
 # ==============================================

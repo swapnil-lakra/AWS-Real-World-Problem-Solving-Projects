@@ -35,24 +35,26 @@ module "my_cloudwatch" {
   asg_name                              = module.auto_scaling_group.asg_name
   rds_instance_identifier               = module.my_rds.db_instance_identifier
   s3_bucket_name                        = module.my_s3_bucket.bucket_name
-  sns_topic_arn                         = module.my_sns.sns_topic_arn
-  aws_iam_lambda_role_arn               = module.finops_lambda.aws_iam_lambda_role_arn
+  sns_topic_arn                         = module.my_sns.sns_topic_arn 
+}
+
+module "my_event-bridge" {
+  source = "../../modules/event-bridge"
   rds_stop_lambda_arn = module.finops_lambda.rds_stop_lambda_arn
   rds_start_lambda_arn = module.finops_lambda.rds_start_lambda_arn
-  aws_lambda_function_rds_optimizer_arn = module.finops_lambda.aws_lambda_function_rds_optimizer_arn
-  aws_lambda_function_s3_optimizer_arn  = module.finops_lambda.aws_lambda_function_s3_optimizer_arn
+  rds_instance_identifier = module.my_rds.db_instance_identifier
+  rds_idle_lambda_function_arn = module.finops_lambda.aws_lambda_function_rds_idle_stop_arn
 }
 
 module "finops_lambda" {
-  asg_name                     = module.auto_scaling_group.asg_name
-  rds_instance_identifier      = module.my_rds.db_instance_identifier
+  asg_name                     = module.auto_scaling_group.asg_name 
+  rds_instance_identifier      = module.my_rds.db_instance_identifier 
   s3_bucket_name               = module.my_s3_bucket.bucket_name 
-  rds_idle_scheduler_rule_arn  = module.my_cloudwatch.rds_idle_scheduler_rule_arn
-  s3_unused_scheduler_rule_arn = module.my_cloudwatch.s3_unused_scheduler_rule_arn
-  rds_start_rule_arn = module.my_cloudwatch.rds_start_rule_arn
-  rds_stop_rule_arn = module.my_cloudwatch.rds_stop_rule_arn 
-  sns_topic_arn                = module.my_sns.sns_topic_arn
-  source                       = "../../modules/lambda"
+  rds_idle_rule_arn  = module.my_event-bridge.rds_idle_rule_arn
+  rds_start_rule_arn = module.my_event-bridge.rds_start_rule_arn
+  rds_stop_rule_arn = module.my_event-bridge.rds_stop_rule_arn   
+  sns_topic_arn                = module.my_sns.sns_topic_arn 
+  source                       = "../../modules/lambda" 
 }
 
 module "my_sns" {

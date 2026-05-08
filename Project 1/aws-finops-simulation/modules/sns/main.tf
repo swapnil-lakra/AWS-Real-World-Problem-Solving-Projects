@@ -1,5 +1,21 @@
 resource "aws_sns_topic" "my_sns" {
   name = var.sns_topic_name
+
+  tags = {
+    Name        = "finops-alert-topic"
+
+    Role        = "notification-service"
+    Workload    = "sns"
+    Tier        = "monitoring"
+
+    Purpose     = "cost-optimization-alerts"
+    AlertType   = "budget-spike-idle-resource"
+
+    Access      = "internal"
+    Criticality = "high"
+
+    Automation  = "enabled"
+  }
 }
 
 resource "aws_sns_topic_subscription" "email" {

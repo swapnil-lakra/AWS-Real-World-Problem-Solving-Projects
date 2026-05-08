@@ -3,11 +3,17 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Environment = var.env
+      Environment = "dev"
       Project     = "aws-finops-simulation"
       Owner       = "swapnil"
-      CostCenter  = "finops-labs"
+      CostCenter  = "finops-lab"
       ManagedBy   = "terraform"
+
+      Organization = "mid-sized-saas-simulation"
+      Purpose      = "cost-optimization-simulation"
+
+      Compliance   = "finops"
+      Monitoring   = "enabled"
     }
   }
 }

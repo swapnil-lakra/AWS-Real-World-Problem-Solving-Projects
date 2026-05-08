@@ -1,13 +1,6 @@
 resource "aws_db_subnet_group" "db_net" {
   name = "main-db-subnet-group"
   subnet_ids = var.private_subnet_ids
-
-  tags = {
-    Name = "db-subnet-group"
-    Tier = "database"
-    SubnetType = "private"
-    Purpose = "rds-networking"
-  }
 }
 
 resource "aws_db_instance" "web_server-db" {
@@ -22,8 +15,8 @@ resource "aws_db_instance" "web_server-db" {
   port = "3306"
   skip_final_snapshot = true
 
-  allocated_storage = 20
-  storage_type = "gp2"
+  allocated_storage = 10
+  storage_type = "gp3"
   
   # security group connection
   db_subnet_group_name = aws_db_subnet_group.db_net.name
@@ -32,26 +25,34 @@ resource "aws_db_instance" "web_server-db" {
   vpc_security_group_ids = [var.rds_sg_id]
 
   tags = {
-    Name = "overprovisioned-rds"
+    Name        = "overprovisioned-rds"
 
-    Role = "database-tier"
-    Workload = "rds"
-    Tier = "database"
-    SubnetType = "private"
+    Role        = "database-tier"
+    Workload    = "rds"
+    Tier        = "private"
 
-    Purpose = "cost-simulation"
-    Scenario = "overprovisioned-database"
+    Purpose     = "cost-optimization-simulation"
 
-    Utilization = "low"
-    Rightsize = "pending"
-    Optimization = "required"
-
-    Access = "internal"
+    Access      = "internal"
     TrafficType = "mysql"
 
-    Criticality = "high"
-    DataType = "application-db"
+    Scenario    = "overprovisioned-database"
 
-    AutoStop = "false"
+    Utilization = "low"
+    Rightsize   = "pending"
+
+    Monitoring  = "cloudwatch-enabled"
+    Alerting    = "sns-enabled"
+
+    Automation  = "enabled"
+
+    AutoStop    = "true"
+    StopTime    = "21:00"
+    StartTime   = "08:45"
+
+    IdlePolicy  = "cpu<5-and-dbconnections=0-for-25min"
+
+    Optimization = "required"
+    Criticality  = "high"
   }
 }

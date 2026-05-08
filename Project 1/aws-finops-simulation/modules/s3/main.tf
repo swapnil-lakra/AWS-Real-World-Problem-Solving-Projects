@@ -6,25 +6,23 @@ resource "aws_s3_bucket" "my_bucket" {
   bucket = "finops-${random_id.bucket_suffix.hex}"
 
   tags = {
-    Name = "finops-unused-storage-bucket"
+    Name        = "finops-storage-bucket"
 
-    Role = "storage"
-    Workload = "s3"
-    Tier = "storage"
+    Role        = "storage"
+    Workload    = "s3"
+    Tier        = "storage"
 
-    Purpose = "cost-simulation"
-    Scenario = "unused-storage"
+    Purpose     = "application-storage"
 
-    Utilization = "low"
-    lifecycle = "not-configured"
-    Optimization = "required"
+    Access      = "private"
+    DataType    = "application-assets"
 
-    DataType = "logs"
-    Access = "private"
+    Lifecycle   = "enabled"
+    Encryption  = "enabled"
+    Monitoring  = "cloudwatch-metrics"
 
-    Criticality = "low"
-
-    AutoDelete = "false"
+    Optimization = "enabled"
+    Criticality  = "medium"
   }
 }
 
@@ -48,6 +46,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "s3_lifecycle" {
     }
   }
   
+
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "encryption" {
@@ -84,11 +83,16 @@ resource "aws_iam_role" "ec2_s3_access_role" {
   })
 
   tags = {
-    Name = "ec2-s3-access-role"
-    Purpose = "ec2-to-s3-access"
-    Workload = "iam"
-    RoleType = "access-role"
-    ManagedBy = "terraform"
+    Name        = "ec2-s3-access-role"
+
+    Role        = "iam-role"
+    Workload    = "iam"
+
+    Purpose     = "asg-s3-access"
+
+    Access      = "private-instance-access"
+
+    Criticality = "high"
   }
 }
 
@@ -119,10 +123,16 @@ resource "aws_iam_instance_profile" "ec2_profile" {
   role = aws_iam_role.ec2_s3_access_role.name
 
   tags = {
-    Name = "ec2-instance-profile"
-    Purpose = "ec2-s3-access"
-    Workload = "iam"
-    ManagedBy = "terraform"
+    Name        = "asg-instance-profile"
+
+    Role        = "instance-profile"
+    Workload    = "asg"
+
+    Purpose     = "private-instance-s3-access"
+
+    Access      = "internal"
+
+    Criticality = "high"
   }
 }
 
@@ -134,6 +144,17 @@ resource "aws_vpc_endpoint" "s3_gateway" {
   route_table_ids = [var.public_route_table_id, var.private_route_table_id]
 
   tags = {
-    Name = "s3-gateway-endpoint"
+    Name        = "s3-gateway-endpoint"
+
+    Role        = "network-endpoint"
+    Workload    = "s3-access"
+
+    Purpose     = "private-subnet-s3-connectivity"
+
+    Access      = "internal"
+
+    TrafficType = "s3"
+
+    Criticality = "high"
   }
 }

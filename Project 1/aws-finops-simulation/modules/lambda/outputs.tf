@@ -3,14 +3,9 @@ output "aws_iam_lambda_role_arn" {
   value = aws_iam_role.lambda_finops_role.arn
 }
 
-output "aws_lambda_function_rds_optimizer_arn" {
-  description = "ARN of the RDS optimizer Lambda function"
-  value = aws_lambda_function.rds_optimizer.arn
-}
-
-output "aws_lambda_function_s3_optimizer_arn" {
-  description = "ARN of the S3 optimizer Lambda function"
-  value = aws_lambda_function.s3_optimizer.arn
+output "aws_lambda_function_rds_idle_stop_arn" {
+  description = "ARN of the RDS idle function Lambda function"
+  value = aws_lambda_function.rds_idle_stop.arn
 }
 
 output "rds_stop_lambda_arn" {

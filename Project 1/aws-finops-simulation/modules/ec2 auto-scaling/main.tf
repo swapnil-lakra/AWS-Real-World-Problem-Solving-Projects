@@ -23,6 +23,23 @@ resource "aws_launch_template" "lt" {
     http_tokens = "required"
     http_put_response_hop_limit = 1
   }
+
+  tags = {
+    Name        = "web-launch-template"
+
+    Role        = "launch-template"
+    Workload    = "asg"
+    Tier        = "application"
+
+    Purpose     = "web-server-deployment"
+
+    Access      = "private"
+
+    TrafficType = "user-facing"
+
+    Optimization = "enabled"
+    Criticality  = "high"
+  }
 }
 
 # Load Balancer Target Group
@@ -41,6 +58,22 @@ resource "aws_lb_target_group" "tg" {
     path = "/"
     port = "traffic-port"
   }
+
+  tags = {
+    Name        = "web-target-group"
+
+    Role        = "traffic-routing"
+    Workload    = "alb"
+    Tier        = "application"
+
+    Purpose     = "asg-traffic-routing"
+
+    TrafficType = "http"
+
+    Monitoring  = "health-check-enabled"
+
+    Criticality = "high"
+  }
 }
 
 # ALB (Application Load Balancer)
@@ -52,6 +85,24 @@ resource "aws_lb" "alb" {
   subnets = var.public_subnet_ids 
 
   enable_deletion_protection = false
+
+  tags = {
+    Name        = "web-alb"
+
+    Role        = "load-balancer"
+    Workload    = "alb"
+    Tier        = "public"
+
+    Purpose     = "internet-ingress"
+
+    Access      = "internet-facing"
+    TrafficType = "http"
+
+    Monitoring  = "enabled"
+
+    Optimization = "enabled"
+    Criticality  = "high"
+  }
 }
 
 # Listener
@@ -63,6 +114,20 @@ resource "aws_lb_listener" "listener" {
   default_action {
     type = "forward"
     target_group_arn = aws_lb_target_group.tg.arn
+  }
+
+  tags = {
+    Name        = "alb-http-listener"
+
+    Role        = "traffic-listener"
+    Workload    = "alb"
+    Tier        = "public"
+
+    Purpose     = "http-request-forwarding"
+
+    TrafficType = "http"
+
+    Criticality = "high"
   }
 }
 
@@ -93,6 +158,66 @@ resource "aws_autoscaling_group" "asg" {
     preferences {
       min_healthy_percentage = 50
     }
+  }
+
+  tag {
+    key                 = "Name"
+    value               = "web-asg-instance"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Role"
+    value               = "application-tier"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Workload"
+    value               = "asg"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Tier"
+    value               = "private"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Purpose"
+    value               = "cost-optimization-simulation"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "TrafficPattern"
+    value               = "predictable-with-spikes"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Schedule"
+    value               = "08:45-21:00"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "AutoScaling"
+    value               = "enabled"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Optimization"
+    value               = "enabled"
+    propagate_at_launch = true
+  }
+
+  tag {
+    key                 = "Criticality"
+    value               = "high"
+    propagate_at_launch = true
   }
 }
 
