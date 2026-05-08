@@ -1,10 +1,22 @@
-resource "random_id" "bucket_suffix" {
-  byte_length = 4
+# terraform {
+#     backend "s3" {
+#     bucket         = "finops-terraform-state-fa277"
+#     key            = "global/mystatefile/terraform.tfstate"
+#     region         = "ap-south-2"
+#     dynamodb_table = "finops-terraform-state-lock"
+#     encrypt        = true
+#   }
+# }
+
+terraform {
+  backend "local" {
+    path = "terraform.tfstate"
+  }
 }
 
 # S3 Bucket for store terraform state and manage
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "finops-terraform-state-${random_id.bucket_suffix.hex}"
+  bucket = "finops-terraform-state-fa277"
 
   lifecycle {
     prevent_destroy = false

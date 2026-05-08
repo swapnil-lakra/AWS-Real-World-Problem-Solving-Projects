@@ -153,7 +153,7 @@ resource "aws_cloudwatch_composite_alarm" "rds_idle_composite" {
   actions_enabled = true
   alarm_actions = [var.sns_topic_arn]
 
-  alarm_rule = "ALARM(${aws_cloudwatch_metric_alarm.rds_idle_cpu}) AND ALARM(${aws_cloudwatch_metric_alarm.rds_zero_connections})"
+  alarm_rule = "ALARM(${aws_cloudwatch_metric_alarm.rds_idle_cpu.alarm_name}) AND ALARM(${aws_cloudwatch_metric_alarm.rds_zero_connections.alarm_name})"
 
   tags = {
     Name        = "rds-idle-composite-alarm"

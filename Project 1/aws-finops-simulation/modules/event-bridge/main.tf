@@ -25,7 +25,7 @@ resource "aws_cloudwatch_event_rule" "rds_idle_rule" {
 
     Monitoring  = "cloudwatch-composite-alarm"
 
-    TriggerCondition = "cpu<5-and-dbconnections=0"
+    TriggerCondition = "cpu-lessthan-5-and-dbconnections-equals-0"
 
     Automation  = "enabled"
 

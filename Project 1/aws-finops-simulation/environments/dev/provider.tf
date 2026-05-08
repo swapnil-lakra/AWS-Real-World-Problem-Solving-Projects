@@ -12,8 +12,8 @@ provider "aws" {
       Organization = "mid-sized-saas-simulation"
       Purpose      = "cost-optimization-simulation"
 
-      Compliance   = "finops"
-      Monitoring   = "enabled"
+      Compliance = "finops"
+      Monitoring = "enabled"
     }
   }
 }

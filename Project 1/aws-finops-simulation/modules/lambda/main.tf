@@ -192,7 +192,7 @@ resource "aws_lambda_function" "rds_idle_stop" {
 
     Automation  = "enabled"
 
-    IdlePolicy  = "cpu<5-and-dbconnections=0-for-25min"
+    IdlePolicy  = "cpu-less-than-5-and-dbconnections-equals-0-for-25min"
 
     Action      = "auto-stop-rds"
 

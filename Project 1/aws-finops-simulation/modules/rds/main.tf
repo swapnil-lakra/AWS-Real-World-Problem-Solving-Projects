@@ -16,7 +16,7 @@ resource "aws_db_instance" "web_server-db" {
   skip_final_snapshot = true
 
   allocated_storage = 10
-  storage_type = "gp3"
+  storage_type = "gp2"
   
   # security group connection
   db_subnet_group_name = aws_db_subnet_group.db_net.name
@@ -47,10 +47,10 @@ resource "aws_db_instance" "web_server-db" {
     Automation  = "enabled"
 
     AutoStop    = "true"
-    StopTime    = "21:00"
-    StartTime   = "08:45"
+    StopTime    = "21-00"
+    StartTime   = "08-45"
 
-    IdlePolicy  = "cpu<5-and-dbconnections=0-for-25min"
+    IdlePolicy  = "cpu-less-than-5-and-dbconnections-equals-0-for-25min"
 
     Optimization = "required"
     Criticality  = "high"
