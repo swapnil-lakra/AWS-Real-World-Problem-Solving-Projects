@@ -163,6 +163,25 @@ terraform apply -auto-approve
 ## Lessons Learned & What I Would Change
 
 # Engineering Mindset & Problem Solving Approach
+Several Components in this project were unfamiliar initially, including:
+- Terraform state management
+- VPC CIDR block (public and private subnets)
+- Security Groups (restricted inbound rules)
+- User data script debugging
+- Auto Scaling Groups and it's policy and schedule
+- Application Load Balancer and it's main components
+- AWS SSM Parameter Store (SecureString) 
+- S3 Bucket (storage encryption using SSE)
+- CloudWatch (metrices, widgets, alarm, custom dashboard)
+- EventBridge (rules, targets, schedule)
+- AWS Lambda function (execution and code debugging)
+- IAM (roles and policies) and role debugging
+- Event-driven automation
+- Cost Optimization technique
+- Tagging strategy
+
+Approach used :
+
 
 # Future Enhancements
 
@@ -175,7 +194,7 @@ terraform destroy -auto-approve
 important :
 - Empty S3 bucket before destroy
 - Verify billing dashboard after cleanup
-
+---
 # Security Considerations
 Security measures implemented:
 - least-privilage IAM access

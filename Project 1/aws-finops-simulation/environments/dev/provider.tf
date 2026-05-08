@@ -3,7 +3,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Environment = "dev"
+      Environment = var.env
       Project     = "aws-finops-simulation"
       Owner       = "swapnil"
       CostCenter  = "finops-labs"
