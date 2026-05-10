@@ -1,27 +1,25 @@
 variable "aws_region" {
-  description = "Value of current aws region"
-  type = string
-  default = "ap-south-2"
+  description = "AWS region where monitoring, automation, and infrastructure resources are deployed."
+  type        = string
+  default     = "ap-south-2"
 }
 
 variable "asg_name" {
-  description = "Name of Auto Scaling Group"
-  type = string
+  description = "Name of the Auto Scaling Group used for infrastructure monitoring and scaling operations."
+  type        = string
 }
-
 
 variable "rds_instance_identifier" {
-  description = "RDS instance identifier"
-  type = string
+  description = "Unique identifier of the RDS instance used for monitoring and automation workflows."
+  type        = string
 }
 
-
 variable "s3_bucket_name" {
-  description = "S3 bucket name"
-  type = string
+  description = "Name of the S3 bucket used for storage monitoring and infrastructure integration."
+  type        = string
 }
 
 variable "sns_topic_arn" {
-  description = "arn of sns topic"
-  type = string
+  description = "ARN of the SNS topic used for CloudWatch alarm notifications and operational alerts."
+  type        = string
 }
