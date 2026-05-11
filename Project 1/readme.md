@@ -26,11 +26,13 @@
 
 # Business Problem
 
-A mid-sized SaaS company operating on AWS was experiencing increasing infrastructure costs caused by idle compute resources, overprovisioned databases, and limited visibility into infrastructure utilization.
+A mid-sized SaaS company operating on AWS was experiencing rapidly increasing cloud infrastructure costs caused by idle compute resources, overprovisioned databases, and limited visibility into infrastructure utilization patterns.
 
-Although workload patterns were relatively predictable, the absence of centralized monitoring and automated optimization workflows resulted in unnecessary resource runtime and growing infrastructure overhead.
+Although workload traffic remained relatively predictable, the organization lacked centralized monitoring, automated optimization workflows, and a dedicated FinOps practice. A small DevOps team managing multiple AWS services could not efficiently identify and optimize underutilized infrastructure without introducing operational risk or additional management overhead.
 
-The objective was to design a low-cost optimization platform capable of improving infrastructure efficiency without compromising scalability, operational reliability, or security.
+If left unresolved, the company risked wasting 25–40% of its monthly AWS spending, potentially resulting in ₹1–₹1.5 crore in annual infrastructure losses.
+
+The objective was to design a low-cost, event-driven optimization platform capable of improving infrastructure efficiency while maintaining scalability, security, and operational reliability.
 
 ---
 

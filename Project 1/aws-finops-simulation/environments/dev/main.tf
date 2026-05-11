@@ -23,7 +23,7 @@ module "my_sg" {
 module "my_s3_bucket" {
   source = "../../modules/s3"
 
-  vpc_id                 = module.my_vpc.vpc_id
+  vpc_id = module.my_vpc.vpc_id
 
   public_route_table_id  = module.my_vpc.public_route_table_id
   private_route_table_id = module.my_vpc.private_route_table_id
@@ -36,12 +36,12 @@ module "my_s3_bucket" {
 module "auto_scaling_group" {
   source = "../../modules/ec2 auto-scaling"
 
-  vpc_id             = module.my_vpc.vpc_id
+  vpc_id = module.my_vpc.vpc_id
 
   # WHY:
   # Public subnets are used for the internet-facing Application Load Balancer.
 
-  public_subnet_ids  = [
+  public_subnet_ids = [
     module.my_vpc.public_subnet_1_id,
     module.my_vpc.public_subnet_2_id
   ]
@@ -54,8 +54,8 @@ module "auto_scaling_group" {
     module.my_vpc.private_subnet_2_id
   ]
 
-  alb_sg_id          = module.my_sg.alb_sg_id
-  asg_sg_id          = module.my_sg.asg_sg_id
+  alb_sg_id = module.my_sg.alb_sg_id
+  asg_sg_id = module.my_sg.asg_sg_id
 
   # WHY:
   # IAM instance profile allows EC2 instances to securely access S3 resources.
@@ -89,7 +89,7 @@ module "my_cloudwatch" {
   rds_instance_identifier = module.my_rds.db_instance_identifier
   s3_bucket_name          = module.my_s3_bucket.bucket_name
 
-  sns_topic_arn           = module.my_sns.sns_topic_arn
+  sns_topic_arn = module.my_sns.sns_topic_arn
 }
 
 # WHY:
@@ -99,10 +99,10 @@ module "my_cloudwatch" {
 module "my_event-bridge" {
   source = "../../modules/event-bridge"
 
-  rds_stop_lambda_arn          = module.finops_lambda.rds_stop_lambda_arn
-  rds_start_lambda_arn         = module.finops_lambda.rds_start_lambda_arn
+  rds_stop_lambda_arn  = module.finops_lambda.rds_stop_lambda_arn
+  rds_start_lambda_arn = module.finops_lambda.rds_start_lambda_arn
 
-  rds_instance_identifier      = module.my_rds.db_instance_identifier
+  rds_instance_identifier = module.my_rds.db_instance_identifier
 
   rds_idle_lambda_function_arn = module.finops_lambda.aws_lambda_function_rds_idle_stop_arn
 }
@@ -117,13 +117,13 @@ module "finops_lambda" {
   asg_name                = module.auto_scaling_group.asg_name
   rds_instance_identifier = module.my_rds.db_instance_identifier
 
-  s3_bucket_name          = module.my_s3_bucket.bucket_name
+  s3_bucket_name = module.my_s3_bucket.bucket_name
 
-  rds_idle_rule_arn       = module.my_event-bridge.rds_idle_rule_arn
-  rds_start_rule_arn      = module.my_event-bridge.rds_start_rule_arn
-  rds_stop_rule_arn       = module.my_event-bridge.rds_stop_rule_arn
+  rds_idle_rule_arn  = module.my_event-bridge.rds_idle_rule_arn
+  rds_start_rule_arn = module.my_event-bridge.rds_start_rule_arn
+  rds_stop_rule_arn  = module.my_event-bridge.rds_stop_rule_arn
 
-  sns_topic_arn           = module.my_sns.sns_topic_arn
+  sns_topic_arn = module.my_sns.sns_topic_arn
 }
 
 # WHY:

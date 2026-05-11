@@ -24,22 +24,22 @@ provider "aws" {
       # WHY:
       # Groups all infrastructure resources under the same project name for easier management.
 
-      Project     = "aws-finops-simulation"
+      Project = "aws-finops-simulation"
 
       # WHY:
       # Defines resource ownership for operational accountability.
 
-      Owner       = "swapnil"
+      Owner = "swapnil"
 
       # WHY:
       # Helps track infrastructure spending for FinOps and cost allocation reporting.
 
-      CostCenter  = "finops-lab"
+      CostCenter = "finops-lab"
 
       # WHY:
       # Indicates that the infrastructure is fully managed through Infrastructure as Code.
 
-      ManagedBy   = "terraform"
+      ManagedBy = "terraform"
 
       # WHY:
       # Identifies the infrastructure as a simulation of a real-world SaaS environment.
@@ -49,7 +49,7 @@ provider "aws" {
       # WHY:
       # Describes the primary business objective of the infrastructure.
 
-      Purpose      = "cost-optimization-simulation"
+      Purpose = "cost-optimization-simulation"
 
       # WHY:
       # Indicates the infrastructure follows FinOps governance and optimization practices.
