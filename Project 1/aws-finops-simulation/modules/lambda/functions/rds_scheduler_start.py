@@ -24,7 +24,7 @@ def lambda_handler(event, context):
     # This avoids hardcoding sensitive or environment-specific values inside the code.
 
     db_id = os.environ['DB_INSTANCE_ID']
-    sns_topic_arn = os.environ.get('SNS_TOPIC_ARN')
+    sns_topic_arn = os.environ['SNS_TOPIC_ARN']
 
     try:
 

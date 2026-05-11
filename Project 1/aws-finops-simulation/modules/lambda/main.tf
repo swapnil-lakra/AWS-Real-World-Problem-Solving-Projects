@@ -89,11 +89,21 @@ resource "aws_iam_role_policy" "rds_policy" {
         ]
 
         Resource = "arn:aws:rds:${var.aws_region}:${data.aws_caller_identity.current.account_id}:db:${var.rds_instance_identifier}"
+      },
+      {
+        Sid = "CloudWatchLogs"
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+
+        Resource = "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/*"
       }
     ]
   })
 }
-
 # WHY:
 # Grants Lambda permission to publish operational notifications to SNS.
 # Used for start, stop, success, and failure alerts.
@@ -216,11 +226,11 @@ resource "aws_lambda_function" "rds_stop_scheduler" {
 
 resource "aws_lambda_function" "rds_idle_stop" {
   filename      = data.archive_file.rds_idle_stop_zip.output_path
-  function_name = "rds-idle-optimizer"
+  function_name = "rds-idle-stop"
 
   role          = aws_iam_role.lambda_finops_role.arn
 
-  handler       = "rds_optimizer.lambda_handler"
+  handler       = "rds_idle_stop.lambda_handler"
   runtime       = var.runtime_environment
   timeout       = 60
 
@@ -228,7 +238,7 @@ resource "aws_lambda_function" "rds_idle_stop" {
 
   environment {
     variables = {
-      RDS_INSTANCE_ID = var.rds_instance_identifier
+      DB_INSTANCE_ID = var.rds_instance_identifier
     }
   }
 

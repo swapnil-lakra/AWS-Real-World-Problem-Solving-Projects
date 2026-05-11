@@ -3,7 +3,7 @@ output "asg_name" {
   value       = aws_autoscaling_group.asg.name
 }
 
-output "alb_dns_name" {
-  description = "Public DNS name of the Application Load Balancer used to access the web application."
-  value       = aws_lb.alb.dns_name
-}
+# output "alb_dns_name" {
+#   description = "Public DNS name of the Application Load Balancer used to access the web application."
+#   value       = aws_lb.alb.dns_name
+# }

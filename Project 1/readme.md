@@ -64,7 +64,7 @@ The overall design prioritizes:
 
 # Architecture Diagram
 
-(Add architecture image)
+
 
 The infrastructure is deployed inside a secure Amazon VPC using both public and private subnets to simulate a realistic mid-sized SaaS environment.
 

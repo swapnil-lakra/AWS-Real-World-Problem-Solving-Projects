@@ -40,6 +40,10 @@ resource "aws_db_instance" "web_server-db" {
 
   db_subnet_group_name = aws_db_subnet_group.db_net.name
 
+  
+
+  multi_az = false
+
   # WHY:
   # Restricts database access only to authorized backend application resources using security groups.
 
