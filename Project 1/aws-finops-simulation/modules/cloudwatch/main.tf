@@ -468,7 +468,7 @@ resource "aws_cloudwatch_dashboard" "finops_dashboard" {
       
         x      = 0
         y      = 30
-        width  = 12
+        width  = 8
         height = 6
       },
       
@@ -502,7 +502,7 @@ resource "aws_cloudwatch_dashboard" "finops_dashboard" {
       
         x      = 12
         y      = 30
-        width  = 12
+        width  = 8
         height = 6
       },
       
@@ -527,8 +527,8 @@ resource "aws_cloudwatch_dashboard" "finops_dashboard" {
       
         x      = 0
         y      = 36
-        width  = 24
-        height = 5
+        width  = 8
+        height = 6
       }
     ]
   })
