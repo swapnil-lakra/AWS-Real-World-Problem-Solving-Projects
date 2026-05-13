@@ -64,7 +64,7 @@ The overall design prioritizes:
 
 # Architecture Diagram
 
-![Architecture Diagram](https://raw.githubusercontent.com/Swapni-1/AWS-Real-World-Problem-Solving-Projects/452c782c9a2af9ef39ae481e92118624675ce51d/Project%201/diagrams/FinOps%20Architecture%20Diagram.svg)
+![Architecture Diagram](https://raw.githubusercontent.com/Swapni-1/AWS-Real-World-Problem-Solving-Projects/9f9832725378be34a4b3aaf38737c30c728f0ebf/Project%201/diagrams/FinOps%20Architecture%20Diagram.svg)
 
 The infrastructure is deployed inside a secure Amazon VPC using both public and private subnets to simulate a realistic mid-sized SaaS environment.
 
@@ -84,7 +84,7 @@ All networking, compute, monitoring, automation, and security components are pro
 
 Centralized CloudWatch dashboards provide visibility into EC2 utilization, RDS activity, scaling behavior, and infrastructure health metrics.
 
-![CloudWatch Dashboard](assets/cloudwatch-dashboard.png)
+![CloudWatch Dashboard](https://github.com/Swapni-1/AWS-Real-World-Problem-Solving-Projects/blob/main/Project%201/screenshots/CloudWatch%20Dashboard.jpg?raw=true)
 
 ---
 
@@ -194,7 +194,7 @@ The database automatically transitions between running and stopped states based 
 
 | RDS Running State | RDS Stopped State |
 |---|---|
-| ![](assets/rds-running.png) | ![](assets/rds-stopped.png) |
+| ![RDS Running State](https://github.com/Swapni-1/AWS-Real-World-Problem-Solving-Projects/blob/main/Project%201/screenshots/RDS%20In%20Running%20State.jpg?raw=true) | ![RDS Stopped State](https://github.com/Swapni-1/AWS-Real-World-Problem-Solving-Projects/blob/main/Project%201/screenshots/RDS%20Stopped%20After%2020%20mins%20of%20Inactivity.jpg?raw=true) |
 ---
 
 # Lessons Learned
