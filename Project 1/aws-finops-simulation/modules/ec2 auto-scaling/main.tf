@@ -256,7 +256,7 @@ resource "aws_autoscaling_policy" "cpu_tracking" {
       predefined_metric_type = "ASGAverageCPUUtilization"
     }
 
-    target_value = 60
+    target_value = 50
   }
 }
 

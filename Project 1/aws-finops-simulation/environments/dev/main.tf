@@ -54,7 +54,7 @@ module "auto_scaling_group" {
     module.my_vpc.private_subnet_2_id
   ]
 
-  alb_sg_id = module.my_sg.alb_sg_id
+  #alb_sg_id = module.my_sg.alb_sg_id 
   asg_sg_id = module.my_sg.asg_sg_id
 
   # WHY:

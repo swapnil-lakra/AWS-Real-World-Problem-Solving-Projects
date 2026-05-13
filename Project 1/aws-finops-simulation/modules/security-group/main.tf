@@ -3,46 +3,46 @@
 # This security group allows external users to access the Application Load Balancer over HTTP.
 # Outbound traffic is allowed so the ALB can communicate with backend application instances.
 
-resource "aws_security_group" "alb_sg" {
-  name        = "alb-sg"
-  description = "Allow HTTP Inbound"
-  vpc_id      = var.vpc_id
+# resource "aws_security_group" "alb_sg" {
+#   name        = "alb-sg"
+#   description = "Allow HTTP Inbound"
+#   vpc_id      = var.vpc_id
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+#   egress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = -1
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
 
-  tags = {
-    Name        = "sg-alb"
+#   tags = {
+#     Name        = "sg-alb"
 
-    Role        = "load-balancer"
-    Workload    = "alb"
-    Tier        = "public"
+#     Role        = "load-balancer"
+#     Workload    = "alb"
+#     Tier        = "public"
 
-    Access      = "internet-facing"
-    TrafficType = "http"
+#     Access      = "internet-facing"
+#     TrafficType = "http"
 
-    Purpose     = "public-ingress"
+#     Purpose     = "public-ingress"
 
-    Criticality = "high"
-  }
-}
+#     Criticality = "high"
+#   }
+# }
 
 # WHY:
 # Allows inbound HTTP traffic from the internet to the ALB.
 # This enables users to access the web application publicly.
 
-resource "aws_security_group_rule" "alb_ingress" {
-  type              = "ingress"
-  from_port         = 80
-  to_port           = 80
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.alb_sg.id
-}
+# resource "aws_security_group_rule" "alb_ingress" {
+#   type              = "ingress"
+#   from_port         = 80
+#   to_port           = 80
+#   protocol          = "tcp"
+#   cidr_blocks       = ["0.0.0.0/0"]
+#   security_group_id = aws_security_group.alb_sg.id
+# }
 
 # 2. ASG Security Group (ALB -> ASG)
 # WHY:
@@ -90,7 +90,7 @@ resource "aws_security_group_rule" "asg_ingress_from_alb" {
   from_port                = 80
   to_port                  = 80
   protocol                 = "tcp"
-  source_security_group_id = aws_security_group.alb_sg.id
+  cidr_blocks              = ["0.0.0.0/0"]
   security_group_id        = aws_security_group.asg_sg.id
 }
 

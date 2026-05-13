@@ -64,7 +64,7 @@ The overall design prioritizes:
 
 # Architecture Diagram
 
-
+![Architecture Diagram](https://raw.githubusercontent.com/Swapni-1/AWS-Real-World-Problem-Solving-Projects/452c782c9a2af9ef39ae481e92118624675ce51d/Project%201/diagrams/FinOps%20Architecture%20Diagram.svg)
 
 The infrastructure is deployed inside a secure Amazon VPC using both public and private subnets to simulate a realistic mid-sized SaaS environment.
 
@@ -79,6 +79,12 @@ When predefined conditions are met — such as low database activity or idle inf
 To reduce unnecessary cloud spending, the platform implements automated FinOps optimization workflows. The RDS database automatically starts and stops based on business-hour schedules, while additional automation identifies prolonged idle conditions and shuts down underutilized resources when appropriate. Scheduled Auto Scaling actions further reduce unnecessary compute runtime during low-traffic periods.
 
 All networking, compute, monitoring, automation, and security components are provisioned using Terraform with a modular Infrastructure as Code approach to support repeatable, maintainable, and environment-consistent deployments.
+
+## Infrastructure Monitoring
+
+Centralized CloudWatch dashboards provide visibility into EC2 utilization, RDS activity, scaling behavior, and infrastructure health metrics.
+
+![CloudWatch Dashboard](assets/cloudwatch-dashboard.png)
 
 ---
 
@@ -151,6 +157,11 @@ All networking, compute, monitoring, automation, and security components are pro
 
 The project demonstrates how infrastructure automation and observability can improve cloud efficiency without introducing significant operational complexity.
 
+## Infrastructure Cost Visibility
+
+AWS Cost Explorer was used to monitor infrastructure spending patterns and validate optimization effectiveness across compute, database, and networking resources.
+
+![Cost Explorer](assets/cost-explorer.png)
 ---
 
 # Deployment
@@ -177,6 +188,13 @@ terraform apply -auto-approve
 
 The optimization strategy focused on reducing unnecessary runtime while maintaining infrastructure flexibility and scalability.
 
+## Automated RDS Optimization
+
+The database automatically transitions between running and stopped states based on scheduled optimization workflows and idle resource detection.
+
+| RDS Running State | RDS Stopped State |
+|---|---|
+| ![](assets/rds-running.png) | ![](assets/rds-stopped.png) |
 ---
 
 # Lessons Learned
