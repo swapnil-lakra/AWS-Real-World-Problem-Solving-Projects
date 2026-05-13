@@ -163,7 +163,7 @@ The project demonstrates how infrastructure automation and observability can imp
 
 AWS Cost Explorer was used to monitor infrastructure spending patterns and validate optimization effectiveness across compute, database, and networking resources.
 
-![Cost Explorer](assets/cost-explorer.png)
+![Cost Explorer](https://github.com/Swapni-1/AWS-Real-World-Problem-Solving-Projects/blob/main/Project%201/screenshots/Cost%20Explorer.jpg?raw=true)
 ---
 
 # Deployment
