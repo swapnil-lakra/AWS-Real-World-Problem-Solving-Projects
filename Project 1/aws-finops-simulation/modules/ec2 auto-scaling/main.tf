@@ -12,6 +12,10 @@ resource "aws_launch_template" "lt" {
     name = var.ec2_instance_profile_name
   }
 
+  credit_specification {
+    cpu_credits = "standard"
+  }
+
   # block_device_mappings {
   #   device_name = "/dev/sda1"
 

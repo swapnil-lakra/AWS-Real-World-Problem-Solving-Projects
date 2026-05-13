@@ -68,7 +68,9 @@ The overall design prioritizes:
 
 The infrastructure is deployed inside a secure Amazon VPC using both public and private subnets to simulate a realistic mid-sized SaaS environment.
 
-Incoming traffic first reaches an Application Load Balancer (ALB) deployed in the public subnets. The ALB distributes requests across EC2 instances running inside an Auto Scaling Group located in private subnets. This design improves scalability and availability while limiting direct internet exposure to backend services and the database layer.
+Incoming traffic reaches the EC2 instances running inside an Auto Scaling Group (ASG) deployed across private subnets within the VPC. The architecture was designed to improve scalability and infrastructure isolation while limiting unnecessary public exposure to backend services and the database layer.
+
+The application servers communicate with an Amazon RDS MySQL database hosted securely in private subnets. Access to Amazon S3 is handled through an S3 Gateway Endpoint, allowing private connectivity without exposing traffic to the public internet.
 
 The application servers communicate with an Amazon RDS MySQL database hosted securely in private subnets. Access to Amazon S3 is handled through an S3 Gateway Endpoint, allowing private connectivity without exposing traffic to the public internet.
 
