@@ -64,7 +64,7 @@ The overall design prioritizes:
 
 # Architecture Diagram
 
-![Architecture Diagram](https://raw.githubusercontent.com/Swapni-1/AWS-Real-World-Problem-Solving-Projects/ea79a6910ba24396b7b355a717f809564f1d4df6/Project%201/diagrams/FinOps%20Architecture%20Diagram.svg)
+![Architecture Diagram](https://raw.githubusercontent.com/Swapni-1/AWS-Real-World-Problem-Solving-Projects/e404d9dac1c034415d2f823fc3792d5814cb4085/Project%201/diagrams/FinOps%20Architecture%20Diagram.svg)
 
 The infrastructure is deployed inside a secure Amazon VPC using both public and private subnets to simulate a realistic mid-sized SaaS environment.
 
