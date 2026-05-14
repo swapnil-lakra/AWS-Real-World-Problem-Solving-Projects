@@ -24,6 +24,7 @@ module "my_s3_bucket" {
   source = "../../modules/s3"
 
   vpc_id = module.my_vpc.vpc_id
+  sns_topic_arn = module.my_sns.sns_topic_arn
 
   public_route_table_id  = module.my_vpc.public_route_table_id
   private_route_table_id = module.my_vpc.private_route_table_id

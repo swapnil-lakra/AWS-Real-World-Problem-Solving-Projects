@@ -24,3 +24,9 @@ variable "private_route_table_id" {
   type        = string
   description = "ID of the private route table used for internal backend subnet routing."
 }
+
+variable "sns_topic_arn" {
+  type        = string
+  description = "ARN of the SNS topic used for infrastructure monitoring and automation notifications."
+  
+}

@@ -46,7 +46,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "s3_lifecycle" {
     status = "Enabled"
 
     expiration {
-      days = 30
+      days = 1
     }
 
     # WHY:
@@ -62,6 +62,52 @@ resource "aws_s3_bucket_lifecycle_configuration" "s3_lifecycle" {
     noncurrent_version_expiration {
       noncurrent_days = 30
     }
+  }
+}
+
+# 1. SNS Topic create karna
+resource "aws_sns_topic" "s3_delete_alert" {
+  name = "s3-object-deletion-topic"
+}
+
+# 2. SNS Topic Subscription (Apni Email ID daalein)
+resource "aws_sns_topic_subscription" "user_updates" {
+  topic_arn = aws_sns_topic.s3_delete_alert.arn
+  protocol  = "email"
+  endpoint  = "swapnil.cloud.dev@hotmail.com" # <--- Yahan apni email likhein
+}
+
+# 3. SNS Topic Policy (Zaruri: Taki S3 bucket isme message bhej sake)
+resource "aws_sns_topic_policy" "default" {
+  arn    = aws_sns_topic.s3_delete_alert.arn
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "s3.amazonaws.com"
+        }
+        Action   = "SNS:Publish"
+        Resource = aws_sns_topic.s3_delete_alert.arn
+        Condition = {
+          ArnLike = {
+            "aws:SourceArn" = aws_s3_bucket.my_bucket.arn
+          }
+        }
+      }
+    ]
+  })
+}
+
+# 4. S3 Bucket Notification Trigger
+resource "aws_s3_bucket_notification" "bucket_notification" {
+  bucket = aws_s3_bucket.my_bucket.id
+
+  topic {
+    topic_arn     = aws_sns_topic.s3_delete_alert.arn
+    events        = ["s3:ObjectRemoved:*"] # Saare delete events ke liye
+    # filter_suffix = ".log" # Optional: Agar sirf logs delete hone par alert chahiye
   }
 }
 
