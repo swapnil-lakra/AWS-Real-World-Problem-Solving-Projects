@@ -29,7 +29,7 @@ resource "aws_sns_topic" "my_sns" {
 resource "aws_sns_topic_subscription" "email" {
   topic_arn = aws_sns_topic.my_sns.arn
   protocol  = "email"
-  endpoint  = var.alert_email
+  endpoint  = data.aws_ssm_parameter.sns_topic_email.value
 }
 
 # WHY:

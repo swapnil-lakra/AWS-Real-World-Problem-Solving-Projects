@@ -82,7 +82,7 @@ resource "aws_sns_topic" "s3_delete_alert" {
 resource "aws_sns_topic_subscription" "user_updates" {
   topic_arn = aws_sns_topic.s3_delete_alert.arn
   protocol  = "email"
-  endpoint  = "swapnil.cloud.dev@hotmail.com"
+  endpoint  = data.aws_ssm_parameter.sns_topic_email.value
 }
 
 # 3. SNS Topic Policy
