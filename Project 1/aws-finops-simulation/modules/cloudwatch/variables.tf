@@ -1,7 +1,7 @@
 variable "aws_region" {
   description = "AWS region where monitoring, automation, and infrastructure resources are deployed."
   type        = string
-  default     = "ap-south-2"
+  default     = "ap-south-1"
 }
 
 variable "asg_name" {

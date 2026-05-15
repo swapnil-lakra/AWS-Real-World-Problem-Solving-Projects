@@ -5,7 +5,7 @@ variable "env" {
 }
 
 variable "region" {
-  default     = "ap-south-2"
+  default     = "ap-south-1"
   type        = string
   description = "AWS region where the complete FinOps simulation infrastructure will be deployed."
 }

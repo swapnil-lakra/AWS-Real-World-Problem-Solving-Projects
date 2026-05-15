@@ -43,33 +43,6 @@ resource "aws_sns_topic_policy" "allow_cloudwatch" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid    = "FirstStatementOwnerOnly"
-        Effect = "Allow"
-
-        Principal = {
-          AWS = "*"
-        }
-
-        Action = [
-          "SNS:GetTopicAttributes",
-          "SNS:SetTopicAttributes",
-          "SNS:AddPermission",
-          "SNS:RemovePermission",
-          "SNS:DeleteTopic",
-          "SNS:Subscribe",
-          "SNS:ListSubscriptionsByTopic",
-          "SNS:Publish"
-        ]
-
-        Resource = aws_sns_topic.my_sns.arn
-
-        Condition = {
-          StringEquals = {
-            "AWS:SourceOwner" = "598120810611"
-          }
-        }
-      },
-      {
         Sid    = "CloudWatchPublishPermission"
         Effect = "Allow"
 

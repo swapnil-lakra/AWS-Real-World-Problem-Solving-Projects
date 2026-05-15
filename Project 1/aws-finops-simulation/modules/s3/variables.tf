@@ -11,7 +11,7 @@ variable "vpc_id" {
 
 variable "aws_region" {
   type        = string
-  default     = "ap-south-2"
+  default     = "ap-south-1"
   description = "AWS region where the infrastructure resources are created and managed."
 }
 

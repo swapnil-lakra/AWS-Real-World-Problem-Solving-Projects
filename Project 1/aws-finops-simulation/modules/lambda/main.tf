@@ -239,6 +239,7 @@ resource "aws_lambda_function" "rds_idle_stop" {
   environment {
     variables = {
       DB_INSTANCE_ID = var.rds_instance_identifier
+      SNS_TOPIC_ARN  = var.sns_topic_arn
     }
   }
 

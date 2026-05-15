@@ -66,18 +66,30 @@ resource "aws_s3_bucket_lifecycle_configuration" "s3_lifecycle" {
 }
 
 # 1. SNS Topic create karna
+# WHY:
+# Creates a centralized notification channel for S3 object deletion events.
+# Helps improve operational visibility and audit awareness for storage activities.
+
 resource "aws_sns_topic" "s3_delete_alert" {
   name = "s3-object-deletion-topic"
 }
 
-# 2. SNS Topic Subscription (Apni Email ID daalein)
+# 2. SNS Topic Subscription
+# WHY:
+# Subscribes an email endpoint to receive real-time alerts whenever
+# objects are deleted from the S3 bucket.
+
 resource "aws_sns_topic_subscription" "user_updates" {
   topic_arn = aws_sns_topic.s3_delete_alert.arn
   protocol  = "email"
-  endpoint  = "swapnil.cloud.dev@hotmail.com" # <--- Yahan apni email likhein
+  endpoint  = "swapnil.cloud.dev@hotmail.com"
 }
 
-# 3. SNS Topic Policy (Zaruri: Taki S3 bucket isme message bhej sake)
+# 3. SNS Topic Policy
+# WHY:
+# Allows only the specific S3 bucket to publish deletion notifications
+# to the SNS topic for secure event-driven communication.
+
 resource "aws_sns_topic_policy" "default" {
   arn    = aws_sns_topic.s3_delete_alert.arn
   policy = jsonencode({
@@ -101,13 +113,16 @@ resource "aws_sns_topic_policy" "default" {
 }
 
 # 4. S3 Bucket Notification Trigger
+# WHY:
+# Automatically triggers SNS notifications whenever an object is deleted
+# from the S3 bucket to improve monitoring and operational awareness.
+
 resource "aws_s3_bucket_notification" "bucket_notification" {
   bucket = aws_s3_bucket.my_bucket.id
 
   topic {
     topic_arn     = aws_sns_topic.s3_delete_alert.arn
-    events        = ["s3:ObjectRemoved:*"] # Saare delete events ke liye
-    # filter_suffix = ".log" # Optional: Agar sirf logs delete hone par alert chahiye
+    events        = ["s3:ObjectRemoved:*"] 
   }
 }
 

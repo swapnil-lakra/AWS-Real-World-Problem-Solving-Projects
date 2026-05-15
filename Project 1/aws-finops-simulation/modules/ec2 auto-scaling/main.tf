@@ -16,23 +16,12 @@ resource "aws_launch_template" "lt" {
     cpu_credits = "standard"
   }
 
-  # block_device_mappings {
-  #   device_name = "/dev/sda1"
-
-  #   ebs {
-  #     volume_size = 20
-  #     volume_type = "gp3"
-
-  #     delete_on_termination = true
-  #   }
-  # }
-
   network_interfaces {
     associate_public_ip_address = false
     security_groups             = [var.asg_sg_id]
   }
 
-  user_data = data.cloudinit_config.combined_scripts.rendered
+  #user_data = data.cloudinit_config.combined_scripts.rendered
 
   lifecycle {
     create_before_destroy = true
@@ -60,93 +49,6 @@ resource "aws_launch_template" "lt" {
   }
 }
 
-# Load Balancer Target Group
-# WHY:
-# Target Group registers ASG instances behind the ALB.
-# Health checks ensure traffic is routed only to healthy application instances.
-
-# resource "aws_lb_target_group" "tg" {
-#   name     = "web-tg"
-#   port     = 80
-#   protocol = "HTTP"
-#   vpc_id   = var.vpc_id
-
-#   health_check {
-#     enabled             = true
-#     healthy_threshold   = 2
-#     unhealthy_threshold = 2
-#     timeout             = 5
-#     interval            = 30
-#     path                = "/"
-#     port                = "traffic-port"
-#   }
-
-#   tags = {
-#     Name         = "web-target-group"
-#     Role         = "traffic-routing"
-#     Workload     = "alb"
-#     Tier         = "application"
-#     Purpose      = "asg-traffic-routing"
-#     TrafficType  = "http"
-#     Monitoring   = "health-check-enabled"
-#     Criticality  = "high"
-#   }
-# }
-
-# ALB (Application Load Balancer)
-# WHY:
-# ALB acts as the public entry point for user traffic.
-# It distributes requests across multiple ASG instances for scalability and availability.
-
-# resource "aws_lb" "alb" {
-#   name               = "web-alb"
-#   internal           = false
-#   load_balancer_type = "application"
-#   security_groups    = [var.alb_sg_id]
-#   subnets            = var.public_subnet_ids
-
-#   enable_deletion_protection = false
-
-#   tags = {
-#     Name         = "web-alb"
-#     Role         = "load-balancer"
-#     Workload     = "alb"
-#     Tier         = "public"
-#     Purpose      = "internet-ingress"
-#     Access       = "internet-facing"
-#     TrafficType  = "http"
-#     Monitoring   = "enabled"
-#     Optimization = "enabled"
-#     Criticality  = "high"
-#   }
-# }
-
-# Listener
-# WHY:
-# Listener accepts incoming HTTP traffic on port 80.
-# It forwards requests from the ALB to the target group.
-
-# resource "aws_lb_listener" "listener" {
-#   load_balancer_arn = aws_lb.alb.arn
-#   port              = 80
-#   protocol          = "HTTP"
-
-#   default_action {
-#     type             = "forward"
-#     target_group_arn = aws_lb_target_group.tg.arn
-#   }
-
-#   tags = {
-#     Name         = "alb-http-listener"
-#     Role         = "traffic-listener"
-#     Workload     = "alb"
-#     Tier         = "public"
-#     Purpose      = "http-request-forwarding"
-#     TrafficType  = "http"
-#     Criticality  = "high"
-#   }
-# }
-
 # Auto Scaling Group
 # WHY:
 # ASG automatically manages EC2 instance scaling based on workload demand.
@@ -164,8 +66,7 @@ resource "aws_autoscaling_group" "asg" {
     version = "$Latest"
   }
 
-  #target_group_arns         = [aws_lb_target_group.tg.arn]
-  health_check_type         = "ELB"
+  health_check_type         = "EC2"
   health_check_grace_period = 300
 
   lifecycle {

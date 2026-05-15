@@ -25,10 +25,6 @@ variable "private_subnet_ids" {
   type        = list(string)
 }
 
-# variable "alb_sg_id" {
-#   type        = string
-#   description = "Security group ID attached to the Application Load Balancer for public HTTP access."
-# }
 
 variable "asg_sg_id" {
   description = "Security group ID attached to Auto Scaling Group instances for controlled backend access."
@@ -47,6 +43,6 @@ variable "website_directory" {
 }
 
 variable "github_repository" {
-  default     = "https://github.com/Swapni-1/HubSpot-Homepage.git"
+  default     = "https://github.com/swapnil-lakra/HubSpot-Homepage.git"
   description = "GitHub repository URL containing the static website source code used for deployment."
 }

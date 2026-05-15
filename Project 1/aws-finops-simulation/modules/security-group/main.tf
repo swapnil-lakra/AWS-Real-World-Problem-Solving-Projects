@@ -1,50 +1,4 @@
-# 1. ALB Security Group
-# WHY:
-# This security group allows external users to access the Application Load Balancer over HTTP.
-# Outbound traffic is allowed so the ALB can communicate with backend application instances.
-
-# resource "aws_security_group" "alb_sg" {
-#   name        = "alb-sg"
-#   description = "Allow HTTP Inbound"
-#   vpc_id      = var.vpc_id
-
-#   egress {
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = -1
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
-
-#   tags = {
-#     Name        = "sg-alb"
-
-#     Role        = "load-balancer"
-#     Workload    = "alb"
-#     Tier        = "public"
-
-#     Access      = "internet-facing"
-#     TrafficType = "http"
-
-#     Purpose     = "public-ingress"
-
-#     Criticality = "high"
-#   }
-# }
-
-# WHY:
-# Allows inbound HTTP traffic from the internet to the ALB.
-# This enables users to access the web application publicly.
-
-# resource "aws_security_group_rule" "alb_ingress" {
-#   type              = "ingress"
-#   from_port         = 80
-#   to_port           = 80
-#   protocol          = "tcp"
-#   cidr_blocks       = ["0.0.0.0/0"]
-#   security_group_id = aws_security_group.alb_sg.id
-# }
-
-# 2. ASG Security Group (ALB -> ASG)
+# 1. ASG Security Group (ALB -> ASG)
 # WHY:
 # This security group protects application instances inside the private subnet.
 # Only the ALB is allowed to communicate with ASG instances over HTTP.
@@ -94,7 +48,7 @@ resource "aws_security_group_rule" "asg_ingress_from_alb" {
   security_group_id        = aws_security_group.asg_sg.id
 }
 
-# 3. RDS Security Group
+# 2. RDS Security Group
 # WHY:
 # This security group secures the database layer inside the private subnet.
 # Only backend application instances are allowed to connect to the database.
