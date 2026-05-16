@@ -64,7 +64,7 @@ The overall design prioritizes:
 
 # Architecture Diagram
 
-![Architecture Diagram](https://raw.githubusercontent.com/swapnil-lakra/AWS-Real-World-Problem-Solving-Projects/e404d9dac1c034415d2f823fc3792d5814cb4085/Project%201/diagrams/FinOps%20Architecture%20Diagram.svg)
+![Architecture Diagram](https://raw.githubusercontent.com/swapnil-lakra/AWS-Real-World-Problem-Solving-Projects/109581ae5c7ff762044e7a7f60655f4d36a368fe/Project%201/diagrams/FinOps%20Architecture%20Diagram.svg)
 
 The infrastructure is deployed inside a secure Amazon VPC using both public and private subnets to simulate a realistic mid-sized SaaS environment.
 
@@ -196,7 +196,7 @@ The database automatically transitions between running and stopped states based 
 
 | RDS Running State | RDS Stopped State |
 |---|---|
-| ![RDS Running State](https://github.com/Swapni-1/AWS-Real-World-Problem-Solving-Projects/blob/main/Project%201/screenshots/RDS%20In%20Running%20State.jpg?raw=true) | ![RDS Stopped State](https://github.com/Swapni-1/AWS-Real-World-Problem-Solving-Projects/blob/main/Project%201/screenshots/RDS%20Stopped%20After%2020%20mins%20of%20Inactivity.jpg?raw=true) |
+| ![RDS Running State](https://github.com/swapnil-lakra/AWS-Real-World-Problem-Solving-Projects/blob/main/Project%201/screenshots/RDS%20In%20Running%20State.jpg?raw=true) | ![RDS Stopped State](https://github.com/Swapni-1/AWS-Real-World-Problem-Solving-Projects/blob/main/Project%201/screenshots/RDS%20Stopped%20After%2020%20mins%20of%20Inactivity.jpg?raw=true) |
 ---
 
 # Lessons Learned
