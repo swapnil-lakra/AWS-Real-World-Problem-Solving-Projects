@@ -171,7 +171,7 @@ AWS Cost Explorer was used to monitor infrastructure spending patterns and valid
 ```bash
 git clone https://github.com/swapnil-lakra/AWS-Real-World-Problem-Solving-Projects.git
 
-cd "AWS-Real-World-Problem-Solving-Projects/Project 1"
+cd AWS-Real-World-Problem-Solving-Projects/Project\ 1/
 
 terraform init
 terraform plan
