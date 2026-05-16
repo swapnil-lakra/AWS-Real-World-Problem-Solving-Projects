@@ -17,3 +17,9 @@ variable "rds_idle_lambda_function_arn" {
   description = "ARN of the Lambda function triggered to stop idle RDS instances automatically."
   type        = string
 }
+
+variable "asg_schedule_alerts_arn" {
+  type = string
+
+  description = "ARN of the SNS topic used for Auto Scaling schedule and operational alert notifications"
+}

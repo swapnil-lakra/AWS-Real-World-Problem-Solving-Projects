@@ -1,7 +1,7 @@
 
 # AutoFinOps – Real-Time AWS Cloud Cost Optimization Platform
 
-> Designed to reduce simulated SaaS cloud waste by 30–40% through automated infrastructure optimization, centralized monitoring, and event-driven AWS workflows.
+> The system is designed to reduce simulated SaaS cloud waste by 30–40% using automated infrastructure optimization, centralized monitoring, and event-driven AWS workflows.
 
 ---
 

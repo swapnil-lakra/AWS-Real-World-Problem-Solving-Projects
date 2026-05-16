@@ -24,10 +24,10 @@ module "my_s3_bucket" {
   source = "../../modules/s3"
 
   vpc_id = module.my_vpc.vpc_id
-  sns_topic_arn = module.my_sns.sns_topic_arn
 
   public_route_table_id  = module.my_vpc.public_route_table_id
   private_route_table_id = module.my_vpc.private_route_table_id
+  s3_delete_alert_arn    = module.my_sns.sns_topic_arn
 }
 
 # WHY:
@@ -106,6 +106,7 @@ module "my_event-bridge" {
   rds_instance_identifier = module.my_rds.db_instance_identifier
 
   rds_idle_lambda_function_arn = module.finops_lambda.aws_lambda_function_rds_idle_stop_arn
+  asg_schedule_alerts_arn      = module.my_sns.sns_topic_arn
 }
 
 # WHY:
@@ -133,4 +134,5 @@ module "finops_lambda" {
 
 module "my_sns" {
   source = "../../modules/sns"
+  s3_bucket_arn = module.my_s3_bucket.bucket_arn
 }

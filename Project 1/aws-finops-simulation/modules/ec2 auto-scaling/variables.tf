@@ -1,5 +1,5 @@
 variable "ami-id" {
-  default     = "ami-0aa31b568c1e8d622"
+  default     = "ami-09ed39e30153c3bf9"
   type        = string
   description = "AMI ID used for launching EC2 instances inside the Auto Scaling Group."
 }
