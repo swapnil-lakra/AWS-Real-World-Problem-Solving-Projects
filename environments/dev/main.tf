@@ -133,6 +133,6 @@ module "finops_lambda" {
 # Used by CloudWatch alarms and Lambda functions for operational visibility.
 
 module "my_sns" {
-  source = "../../modules/sns"
+  source        = "../../modules/sns"
   s3_bucket_arn = module.my_s3_bucket.bucket_arn
 }

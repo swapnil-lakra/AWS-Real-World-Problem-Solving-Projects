@@ -64,7 +64,7 @@ The overall design prioritizes:
 
 # Architecture Diagram
 
-![Architecture Diagram](https://raw.githubusercontent.com/swapnil-lakra/AWS-Real-World-Problem-Solving-Projects/109581ae5c7ff762044e7a7f60655f4d36a368fe/Project%201/diagrams/FinOps%20Architecture%20Diagram.svg)
+![Architecture Diagram](https://raw.githubusercontent.com/swapnil-lakra/autofinops/1b036d55dedc224d2b08781600fc9c3967f3f1d3/diagrams/FinOps%20Architecture%20Diagram.svg)
 
 The infrastructure is deployed inside a secure Amazon VPC using both public and private subnets to simulate a realistic mid-sized SaaS environment.
 
@@ -86,7 +86,7 @@ All networking, compute, monitoring, automation, and security components are pro
 
 Centralized CloudWatch dashboards provide visibility into EC2 utilization, RDS activity, scaling behavior, and infrastructure health metrics.
 
-![CloudWatch Dashboard](https://github.com/swapnil-lakra/AWS-Real-World-Problem-Solving-Projects/blob/main/Project%201/screenshots/CloudWatch%20Dashboard.jpg?raw=true)
+![CloudWatch Dashboard](https://github.com/swapnil-lakra/autofinops/blob/main/screenshots/CloudWatch%20Dashboard.jpg?raw=true)
 
 ---
 
@@ -163,15 +163,15 @@ The project demonstrates how infrastructure automation and observability can imp
 
 AWS Cost Explorer was used to monitor infrastructure spending patterns and validate optimization effectiveness across compute, database, and networking resources.
 
-![Cost Explorer](https://github.com/swapnil-lakra/AWS-Real-World-Problem-Solving-Projects/blob/main/Project%201/screenshots/Cost%20Explorer.jpg?raw=true)
+![Cost Explorer](https://github.com/swapnil-lakra/autofinops/blob/main/screenshots/Cost%20Explorer.jpg?raw=true)
 ---
 
 # Deployment
 
 ```bash
-git clone https://github.com/swapnil-lakra/AWS-Real-World-Problem-Solving-Projects.git
+git clone https://github.com/swapnil-lakra/autofinops.git
 
-cd AWS-Real-World-Problem-Solving-Projects/Project\ 1/
+cd autofinops/environment/dev
 
 terraform init
 terraform plan
@@ -196,7 +196,7 @@ The database automatically transitions between running and stopped states based 
 
 | RDS Running State | RDS Stopped State |
 |---|---|
-| ![RDS Running State](https://github.com/swapnil-lakra/AWS-Real-World-Problem-Solving-Projects/blob/main/Project%201/screenshots/RDS%20In%20Running%20State.jpg?raw=true) | ![RDS Stopped State](https://github.com/Swapni-1/AWS-Real-World-Problem-Solving-Projects/blob/main/Project%201/screenshots/RDS%20Stopped%20After%2020%20mins%20of%20Inactivity.jpg?raw=true) |
+| ![RDS Running State](https://github.com/swapnil-lakra/autofinops/blob/main/screenshots/RDS%20In%20Running%20State.jpg?raw=true) | ![RDS Stopped State](https://github.com/swapnil-lakra/autofinops/blob/main/screenshots/RDS%20Stopped%20After%2020%20mins%20of%20Inactivity.jpg?raw=true) |
 ---
 
 # Lessons Learned
